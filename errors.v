@@ -1,19 +1,19 @@
 module vargus
 
-fn check_required_err(long_arg string, short_arg string, required bool) {
+fn check_required_err(flag FlagArgs) {
 	mut flag_args := ''
 
-	if long_arg != '' {
-		flag_args = '`--$long_arg`'
-		if short_arg != '' {
+	if flag.argument != '' {
+		flag_args = '`--$flag.argument`'
+		if flag.short_arg != '' {
 			flag_args += ', '
 		}
 	}
-	if short_arg != '' {
-		flag_args += '`-$short_arg`'
+	if flag.short_arg != '' {
+		flag_args += '`-$flag.short_arg`'
 	}
 	
-	if required {
+	if flag.required {
 		println("\n  [!err] Flag $flag_args is required but is not set.")
 		// exit the app
 		exit(0)

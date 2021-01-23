@@ -2,8 +2,9 @@ module vargus
 
 struct Flagger {
 	flag_type string
-// mut:
-// 	flags []FlagArgs
+mut:
+	a Args
+	flags []FlagArgs
 }
 
 pub struct FlagArgs {
@@ -11,6 +12,8 @@ pub struct FlagArgs {
 	short_arg     string [required]
 	required      bool   
 	description   string [required]
+mut:
+	def_val string // this should not be public [todo: make it private]
 }
 
 pub struct IntArgs {
@@ -28,53 +31,71 @@ pub struct FloatArgs {
 
 type TypeArgs = IntArgs | StringArgs | FloatArgs
 
-// handles flags with `INT` data_type
+// Creates a parser instance
+fn (mut fl Flagger) create_parser(flag FlagArgs) &Parser {
+	return &Parser{
+		osargs: fl.a.extract_args(),
+		flag: flag,
+	}
+
+}
+
+// Appends the flag to the array for help usages
+// -> Converts the default value set to string
+//    this is for convenience for the array
+// -> Return a new FlagArgs with the def_val
+//    as string converted from the parsed default_value
+fn (mut fl Flagger) appender(flag TypeArgs) FlagArgs {
+	// append the flag to the array `flags`
+	// TODO: shorten this code, it's repetitive
+	match flag {
+		IntArgs {
+			mut gf := flag
+			gf.def_val = flag.default_value.str()
+			fl.flags << gf.FlagArgs
+			return gf.FlagArgs
+		}
+		StringArgs {
+			mut gf := flag
+			gf.def_val = flag.default_value
+			fl.flags << gf.FlagArgs
+			return gf.FlagArgs
+		}
+		FloatArgs {
+			mut gf := flag
+			gf.def_val = flag.default_value.str()
+			fl.flags << gf.FlagArgs
+			return gf.FlagArgs
+		}
+	}
+}
+
+// Handles flags with `INT` data_type
 pub fn (mut fl Flagger) int(fg IntArgs) int {
-	// add the flag to the []array
-	// fl.flags << fg
-
-	// arguments getter instance
-	mut a := &Args{}
-
-	// parser instance
-	mut ps := &IntParser{
-		flag: fg
-	}
-	ps.osargs = a.extract_args()
-
-	return ps.parse()
+	// append the flag
+	gf := fl.appender(fg)
+	// create parser
+	ps := fl.create_parser(gf)
+	// return the value
+	return ps.parse().int()
 }
 
-// handles flags with `STRING_VAR` data_type
+// Handles flags with `STRING_VAR` data_type
 pub fn (mut fl Flagger) string(fg StringArgs) string {
-	// add the flag to the []array
-	// fl.flags << fg
-
-	// arguments getter instance
-	mut a := &Args{}
-
-	// parser instance
-	mut ps := &StringParser{
-		flag: fg
-	}
-	ps.osargs = a.extract_args()
-
+	// append the flag
+	gf := fl.appender(fg)
+	// create parser
+	ps := fl.create_parser(gf)
+	// return the value
 	return ps.parse()
 }
 
-// handles flags with `FLOAT` data_type
+// Handles flags with `FLOAT` data_type
 pub fn (mut fl Flagger) float(fg FloatArgs) f32 {
-	// add the flag to the []array
-	// fl.flags << fg
-
-	// arguments getter instance
-	mut a := &Args{}
-
-	// parser instance
-	mut ps := &FloatParser{
-		flag: fg
-	}
-	ps.osargs = a.extract_args()
-
-	return ps.parse()
+	// append the flag
+	gf := fl.appender(fg)
+	// create parser
+	ps := fl.create_parser(gf)
+	// return the value
+	return ps.parse().f32()
 }
