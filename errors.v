@@ -12,9 +12,9 @@ fn check_required_err(flag FlagArgs) {
 	if flag.short_arg != '' {
 		flag_args += '`-$flag.short_arg`'
 	}
-	
+
 	if flag.required {
-		println("\n  [!err] Flag $flag_args is required but is not set.")
+		println('\n  [!err] Flag $flag_args is required but is not set.')
 		// exit the app
 		exit(0)
 	}

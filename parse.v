@@ -4,7 +4,7 @@ module vargus
 struct Parser {
 mut:
 	osargs map[string]string
-	flag FlagArgs
+	flag   FlagArgs
 }
 
 // MAIN PARSER, returns a string as a default
@@ -18,7 +18,6 @@ fn (p &Parser) parse() string {
 		if val == '' {
 			return p.flag.def_val
 		}
-
 		// else, return its value
 		return val
 	} else {
@@ -35,7 +34,7 @@ fn (p &Parser) parse() string {
 fn (p &Parser) find_args() (string, bool) {
 	mut val := ''
 	mut ok := false
-	
+
 	for arg, value in p.osargs {
 		if p.flag.argument == arg || p.flag.short_arg == arg {
 			val = value

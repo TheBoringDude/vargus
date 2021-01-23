@@ -3,15 +3,15 @@ module vargus
 struct Flagger {
 	flag_type string
 mut:
-	a Args
+	a     Args
 	flags []FlagArgs
 }
 
 pub struct FlagArgs {
-	argument      string [required]
-	short_arg     string [required]
-	required      bool   
-	description   string [required]
+	argument    string [required]
+	short_arg   string [required]
+	required    bool
+	description string [required]
 mut:
 	def_val string // this should not be public [todo: make it private]
 }
@@ -20,24 +20,25 @@ pub struct IntArgs {
 	FlagArgs
 	default_value int
 }
+
 pub struct StringArgs {
 	FlagArgs
 	default_value string
 }
+
 pub struct FloatArgs {
 	FlagArgs
 	default_value f32
 }
 
-type TypeArgs = IntArgs | StringArgs | FloatArgs
+type TypeArgs = FloatArgs | IntArgs | StringArgs
 
 // Creates a parser instance
 fn (mut fl Flagger) create_parser(flag FlagArgs) &Parser {
 	return &Parser{
-		osargs: fl.a.extract_args(),
-		flag: flag,
+		osargs: fl.a.extract_args()
+		flag: flag
 	}
-
 }
 
 // Appends the flag to the array for help usages

@@ -7,10 +7,10 @@ struct Vargus {
 struct Commander {
 pub mut:
 	add_local_flag Flagger = {
-		flag_type: "local"
+		flag_type: 'local'
 	}
 	add_global_flag Flagger = {
-		flag_type: "global"
+		flag_type: 'global'
 	}
 }
 
@@ -30,5 +30,5 @@ pub fn (v &Vargus) commander() &Commander {
 }
 
 pub fn (v &Vargus) hello() string {
-	return "new vargus app $v.identifier l"
+	return 'new vargus app $v.identifier l'
 }

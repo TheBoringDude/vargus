@@ -31,7 +31,6 @@ fn (mut a Args) extract_args() map[string]string {
 			if args.len > index + 1 {
 				dat = args[index + 1]
 			}
-
 			// set the data
 			a.arguments[arg.replace('--', '').replace('-', '')] = dat
 		}
