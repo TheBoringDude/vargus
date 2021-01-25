@@ -2,6 +2,7 @@ module vargus
 
 struct Flagger {
 	flag_type string
+	command string
 mut:
 	a     Args
 	flags []FlagArgs

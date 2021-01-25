@@ -32,7 +32,7 @@ fn (mut a Args) extract_args() map[string]string {
 				dat = args[index + 1]
 			}
 			// set the data
-			a.arguments[arg.replace('--', '').replace('-', '')] = dat
+			a.arguments[arg] = dat
 		}
 	}
 	return a.arguments
