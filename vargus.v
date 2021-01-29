@@ -1,36 +1,30 @@
 module vargus
 
-
-struct Vargus {
-	identifier rune
+pub struct Commander {
+	command    string
+	short_desc string
+	long_desc  string
+	function   fn (&Commander, []string)
 mut:
-	root &Commander
+	flags []FlagArgs
+	flags_string []string
+	extracted_flags map[string]string
 	sub_commands []&Commander
+	sub_commands_string []string
 }
 
-struct Commander {
-mut:
-	command string
-	under string
-	sub_commands []&Commander
-pub mut:
-	add_local_flag Flagger
-	add_global_flag Flagger
+pub struct CmdConfig {
+	command    string
+	short_desc string
+	long_desc  string
+	function   fn (&Commander, []string)
 }
 
-// create a new instance of vargus
-pub fn new() &Vargus {
-	return &Vargus{
-		root: &Commander{}
+pub fn new(cmdConfig CmdConfig) &Commander {
+	return &Commander{
+		command: cmdConfig.command
+		short_desc: cmdConfig.short_desc
+		long_desc: cmdConfig.long_desc
+		function: cmdConfig.function
 	}
-}
-
-// Returns usage of the CLI App
-pub fn (v &Vargus) usage() []&Commander {
-	println(v.root)
-	return v.sub_commands
-}
-
-pub fn (v &Vargus) hello() string {
-	return 'new vargus app $v.identifier l'
 }

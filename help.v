@@ -1,5 +1,5 @@
 module vargus
 
-fn (v &Vargus) help() {
-	
+pub fn (c &Commander) help() {
+	println(c)
 }
