@@ -12,7 +12,7 @@ enum FlagType {
 	global
 }
 
-struct FlagArgs {
+pub struct FlagArgs {
 mut:
 	name          string
 	short_arg     string

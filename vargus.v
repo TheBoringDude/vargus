@@ -4,10 +4,11 @@ pub struct Commander {
 	command    string
 	short_desc string
 	long_desc  string
-	function   fn (&Commander, []string)
+	function   fn (&Commander, []string, []FlagArgs)
 mut:
 	flags []FlagArgs
-	flags_string []string
+	local_flags_string []string
+	global_flags_string []string
 	extracted_flags map[string]string
 	sub_commands []&Commander
 	sub_commands_string []string
@@ -17,7 +18,7 @@ pub struct CmdConfig {
 	command    string
 	short_desc string
 	long_desc  string
-	function   fn (&Commander, []string)
+	function   fn (&Commander, []string, []FlagArgs)
 }
 
 pub fn new(cmdConfig CmdConfig) &Commander {

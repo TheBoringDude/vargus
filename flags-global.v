@@ -15,8 +15,8 @@ pub fn (mut c Commander) add_global_flag_int(fc IntFlagConfig) {
 
 	// append to list of flags
 	c.flags << flag
-	c.flags_string << flag.name
-	c.flags_string << flag.short_arg
+	c.global_flags_string << flag.name
+	c.global_flags_string << flag.short_arg
 }
 
 // add_global_flag_string handles adding of global flags to the command with string value
@@ -34,8 +34,8 @@ pub fn (mut c Commander) add_global_flag_string(fc StringFlagConfig) {
 
 	// append to list of flags
 	c.flags << flag
-	c.flags_string << flag.name
-	c.flags_string << flag.short_arg
+	c.global_flags_string << flag.name
+	c.global_flags_string << flag.short_arg
 }
 
 // add_global_flag_float handles adding of global flags to the command with float value
@@ -53,8 +53,8 @@ pub fn (mut c Commander) add_global_flag_float(fc FloatFlagConfig) {
 
 	// append to list of flags
 	c.flags << flag
-	c.flags_string << flag.name
-	c.flags_string << flag.short_arg
+	c.global_flags_string << flag.name
+	c.global_flags_string << flag.short_arg
 }
 
 // add_global_flag_bool handles adding of global flags to the command with boolean value
@@ -72,6 +72,6 @@ pub fn (mut c Commander) add_global_flag_bool(fc BoolFlagConfig) {
 
 	// append to list of flags
 	c.flags << flag
-	c.flags_string << flag.name
-	c.flags_string << flag.short_arg
+	c.global_flags_string << flag.name
+	c.global_flags_string << flag.short_arg
 }
