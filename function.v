@@ -18,7 +18,7 @@ pub fn (mut c Commander) run() {
 			c.root()
 		} else {
 			if args_has_hyphen_dash(os.args[1]) && (os.args[1].replace('-','') in c.global_flags_string) == false {
-				println('\n  [!err] unknown flag ${os.args[1]} kk')
+				println('\n  [!err] unknown flag ${os.args[1]}')
 				exit(1)
 			}
 		}
