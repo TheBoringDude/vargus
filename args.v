@@ -25,14 +25,44 @@ fn get_global_flags(cmd &Commander, os_args []string) ([]string, []FlagArgs) {
 				mut fl := i
 
 				if j == long || j == short {
-					fl.value = os_args[k+1]
+					if i.data_type == .boolean {
+						if os_args.len > 1 {
+							if os_args[k+1] == 'true' || os_args[k+1] == 'false' {
+								fl.value = os_args[k+1]
 
-					// append
-					fls << fl
+								// append
+								fls << fl
 
-					// remove
-					oa.delete(k+1)
-					oa.delete(k)
+								// remove
+								oa.delete(k+1)
+								oa.delete(k)
+							} else {
+								fl.value = 'true'
+
+								fls << fl
+
+								// remove
+								oa.delete(k)
+							}
+						}
+						 else {
+							fl.value = 'true'
+
+							fls << fl
+
+							// remove
+							oa.delete(k)
+						}
+					} else {
+						fl.value = os_args[k+1]
+
+						// append
+						fls << fl
+
+						// remove
+						oa.delete(k+1)
+						oa.delete(k)
+					}
 				}
 			}
 		}
@@ -59,14 +89,44 @@ fn parse_flags(cmd &Commander, os_args []string) ([]string, []FlagArgs) {
 				mut fl := i
 
 				if j == long || j == short {
-					fl.value = os_args[k+1]
+					if i.data_type == .boolean {
+						if os_args.len > 1 {
+							if os_args[k+1] == 'true' || os_args[k+1] == 'false' {
+								fl.value = os_args[k+1]
 
-					// append
-					flags << fl
+								// append
+								flags << fl
 
-					// remove
-					oa.delete(k+1)
-					oa.delete(k)
+								// remove
+								oa.delete(k+1)
+								oa.delete(k)
+							} else {
+								fl.value = 'true'
+
+								flags << fl
+
+								// remove
+								oa.delete(k)
+							}
+						}
+						 else {
+							fl.value = 'true'
+
+							flags << fl
+
+							// remove
+							oa.delete(k)
+						}
+					} else {
+						fl.value = os_args[k+1]
+
+						// append
+						flags << fl
+
+						// remove
+						oa.delete(k+1)
+						oa.delete(k)
+					}
 				}
 			}
 		}
