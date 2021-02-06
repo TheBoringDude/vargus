@@ -26,6 +26,19 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 					value := y[1]
 
 					if flag == long || flag == short {
+						// smart handle for boolean flags
+						// if it is equal, equals to true automatically
+						if x.data_type == .boolean {
+							if value == 'false' || value == 'true' {
+								// do nothing
+							} else {
+								// if the value set is not equal to true or false,
+								// show value error
+								println('\n [!value_err] invalid type value for a boolean flag')
+								exit(1)
+							}
+						}
+						// set value
 						x.value = value
 
 						// append new flag w/ value to flags
@@ -38,10 +51,26 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 						args.delete(args.index(i))
 					}
 				} else {
+					value := args[args.index(i)+1] or {
+						''
+					}
+
 					if i == long || i == short {
-						x.value = args[args.index(i)+1] or {
-							println('\n [!blank] no value set for flag: $i')
-							exit(1)
+						// smart handle for boolean flags
+						// if it is equal, equals to true automatically
+						if x.data_type == .boolean {
+							if value == 'false' || value == 'true' {
+								x.value = value
+							} else {
+								// if the value set is not equal to true or false,
+								// parse it but next arg will be parsed to args
+								x.value = 'true'
+							}
+						} else {
+							x.value = args[args.index(i)+1] or {
+								println('\n [!blank] no value set for flag: $i')
+								exit(1)
+							}
 						}
 
 						// append new flag w/ value to flags
@@ -51,7 +80,12 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 						all_flags.delete(ic)
 
 						// remove from osargs
-						args.delete(args.index(i)+1)
+						if value != '' {
+							// only delete from args if flag data_type is not boolean
+							if x.data_type != .boolean {
+								args.delete(args.index(i)+1)
+							}
+						}
 						args.delete(args.index(i))
 					}
 				}
