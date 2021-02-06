@@ -15,18 +15,46 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 		for ic, c in all_flags {
 			mut x := c
 
-			if i == '--$c.name' || i == '-$c.short_arg' {
-				x.value = args[args.index(i)+1]
+			long := '--$c.name'
+			short := '-$c.short_arg'
 
-				// append new flag w/ value to flags
-				flags << x
+			if i.starts_with(long) || i.starts_with(short) {
+				// check if equals sign is used
+				if '=' in i {
+					y := args[args.index(i)].split('=')
+					flag := y[0]
+					value := y[1]
 
-				// remove old flag w/ value from all
-				all_flags.delete(ic)
+					if flag == long || flag == short {
+						x.value = value
 
-				// remove from osargs
-				args.delete(args.index(i)+1)
-				args.delete(args.index(i))
+						// append new flag w/ value to flags
+						flags << x
+
+						// remove old flag w/ value from all
+						all_flags.delete(ic)
+
+						// remove from osargs
+						args.delete(args.index(i))
+					}
+				} else {
+					if i == long || i == short {
+						x.value = args[args.index(i)+1] or {
+							println('\n [!blank] no value set for flag: $i')
+							exit(1)
+						}
+
+						// append new flag w/ value to flags
+						flags << x
+
+						// remove old flag w/ value from all
+						all_flags.delete(ic)
+
+						// remove from osargs
+						args.delete(args.index(i)+1)
+						args.delete(args.index(i))
+					}
+				}
 			}
 		}
 	}
