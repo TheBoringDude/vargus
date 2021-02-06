@@ -34,8 +34,7 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 							} else {
 								// if the value set is not equal to true or false,
 								// show value error
-								println('\n [!value_err] invalid type value for a boolean flag')
-								exit(1)
+								value_err('invalid type value for a boolean flag')
 							}
 						}
 						// set value
@@ -67,9 +66,10 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 								x.value = 'true'
 							}
 						} else {
-							x.value = args[args.index(i)+1] or {
-								println('\n [!blank] no value set for flag: $i')
-								exit(1)
+							x.value = args[args.index(value)] or {
+								// show blank error
+								blank_err(i)
+								'' // it is needed, 
 							}
 						}
 
@@ -83,7 +83,11 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 						if value != '' {
 							// only delete from args if flag data_type is not boolean
 							if x.data_type != .boolean {
-								args.delete(args.index(i)+1)
+								if args_has_hyphen_dash(value) {
+									value_err('cannot use a flag as a value for a flag')
+								} else {
+									args.delete(args.index(value))
+								}
 							}
 						}
 						args.delete(args.index(i))

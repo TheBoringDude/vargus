@@ -14,9 +14,20 @@ fn required_err(fl_name string, fl_shortarg string) {
 		flag_str += '-$fl_shortarg'
 	}
 
-	// show err
 	println('\n [!err] flag: $flag_str is required but is not set')
-
-	// exit app
 	exit(0)
+}
+
+
+// value_err shows error about invalid data type value set in a flag
+fn value_err(message string) {
+	println('\n [!value_err] $message')
+	exit(1)
+}
+
+
+// blank_err shows error if no value is set to the flag
+fn blank_err(flag string) {
+	println('\n [!blank] no value set for flag: $flag')
+	exit(1)
 }
