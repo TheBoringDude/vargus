@@ -1,12 +1,13 @@
 module vargus
 
-pub struct Commander {
+struct Commander {
 	command    string
 	short_desc string
 	long_desc  string
-	function   fn (&Commander, []string, []FlagArgs)
+	function   fn (args []string, flags []FlagArgs)
 mut:
 	flags []FlagArgs
+	global_flags []FlagArgs
 	local_flags_string []string
 	global_flags_string []string
 	extracted_flags map[string]string
@@ -18,7 +19,7 @@ pub struct CmdConfig {
 	command    string
 	short_desc string
 	long_desc  string
-	function   fn (&Commander, []string, []FlagArgs)
+	function   fn (args []string, flags []FlagArgs)
 }
 
 pub fn new(cmdConfig CmdConfig) &Commander {

@@ -14,21 +14,9 @@ pub fn (mut c Commander) add_global_flag_int(fc IntFlagConfig) {
 	}
 
 	// append to list of flags
-	c.flags << flag
-	c.global_flags_string << flag.name
-	c.global_flags_string << flag.short_arg
-
-	// append also to sub_commands
-	for x in c.sub_commands {
-		mut scmd := x
-		scmd.flags << c.flags
-		scmd.global_flags_string << flag.name
-		scmd.global_flags_string << flag.short_arg
-
-		// remove from parent
-		c.sub_commands.delete(c.sub_commands.index(x))
-		c.sub_commands << scmd
-	}
+	c.global_flags << flag
+	c.global_flags_string << '--$flag.name'
+	c.global_flags_string << '-$flag.short_arg'
 }
 
 // add_global_flag_string handles adding of global flags to the command with string value
@@ -45,21 +33,9 @@ pub fn (mut c Commander) add_global_flag_string(fc StringFlagConfig) {
 	}
 
 	// append to list of flags
-	c.flags << flag
-	c.global_flags_string << flag.name
-	c.global_flags_string << flag.short_arg
-
-	// append also to sub_commands
-	for x in c.sub_commands {
-		mut scmd := x
-		scmd.flags << c.flags
-		scmd.global_flags_string << flag.name
-		scmd.global_flags_string << flag.short_arg
-
-		// remove from parent
-		c.sub_commands.delete(c.sub_commands.index(x))
-		c.sub_commands << scmd
-	}
+	c.global_flags << flag
+	c.global_flags_string << '--$flag.name'
+	c.global_flags_string << '-$flag.short_arg'
 }
 
 // add_global_flag_float handles adding of global flags to the command with float value
@@ -76,21 +52,9 @@ pub fn (mut c Commander) add_global_flag_float(fc FloatFlagConfig) {
 	}
 
 	// append to list of flags
-	c.flags << flag
-	c.global_flags_string << flag.name
-	c.global_flags_string << flag.short_arg
-
-	// append also to sub_commands
-	for x in c.sub_commands {
-		mut scmd := x
-		scmd.flags << c.flags
-		scmd.global_flags_string << flag.name
-		scmd.global_flags_string << flag.short_arg
-
-		// remove from parent
-		c.sub_commands.delete(c.sub_commands.index(x))
-		c.sub_commands << scmd
-	}
+	c.global_flags << flag
+	c.global_flags_string << '--$flag.name'
+	c.global_flags_string << '-$flag.short_arg'
 }
 
 // add_global_flag_bool handles adding of global flags to the command with boolean value
@@ -107,19 +71,7 @@ pub fn (mut c Commander) add_global_flag_bool(fc BoolFlagConfig) {
 	}
 
 	// append to list of flags
-	c.flags << flag
-	c.global_flags_string << flag.name
-	c.global_flags_string << flag.short_arg
-
-	// append also to sub_commands
-	for x in c.sub_commands {
-		mut scmd := x
-		scmd.flags << c.flags
-		scmd.global_flags_string << flag.name
-		scmd.global_flags_string << flag.short_arg
-
-		// remove from parent
-		c.sub_commands.delete(c.sub_commands.index(x))
-		c.sub_commands << scmd
-	}
+	c.global_flags << flag
+	c.global_flags_string << '--$flag.name'
+	c.global_flags_string << '-$flag.short_arg'
 }

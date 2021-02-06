@@ -1,48 +1,31 @@
 module vargus
 
+// parse_flags is the main flag parser
+// it parses all flags in the osargs
+fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []FlagArgs) {
+	mut flags := []FlagArgs{}
+	mut args := osargs.clone()
+	mut all_flags := cmd.flags.clone()
 
-// // Main PARSER
-// struct Parser {
-// mut:
-// 	osargs map[string]string
-// 	flag   FlagArgs
-// }
+	// append
+	all_flags << gflags
 
-// // MAIN PARSER, returns a string as a default
-// fn (p &Parser) parse() string {
-// 	val, ok := p.find_args()
+	// extract values
+	for i in osargs {
+		for c in all_flags {
+			mut x := c
 
-// 	// if ok, a value or blank val was set
-// 	if ok {
-// 		// check if blank
-// 		// if it is, return the default value
-// 		if val == '' {
-// 			return p.flag.def_val
-// 		}
-// 		// else, return its value
-// 		return val
-// 	} else {
-// 		check_required_err(p.flag)
-// 	}
+			if i == '--$c.name' || i == '-$c.short_arg' {
+				x.value = args[args.index(i)+1]
 
-// 	// if it cannot find the value,,
-// 	// return the default val set
-// 	return p.flag.def_val
-// }
+				flags << x
 
-// // find value set in the value
-// // of the defined flag
-// fn (p &Parser) find_args() (string, bool) {
-// 	mut val := ''
-// 	mut ok := false
+				// remove from osargs
+				args.delete(args.index(i)+1)
+				args.delete(args.index(i))
+			}
+		}
+	}
 
-// 	for arg, value in p.osargs {
-// 		if '--$p.flag.argument' == arg || '-$p.flag.short_arg' == arg {
-// 			val = value
-// 			ok = true
-// 			break
-// 		}
-// 	}
-
-// 	return val, ok
-// }
+	return args, flags
+}

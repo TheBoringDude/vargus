@@ -2,82 +2,41 @@ module vargus
 
 import os
 
+// run is the main cli app executor
 pub fn (mut c Commander) run() {
-	// run flag extractor
-	// c.extract_flags()
-
-	// run
-	if os.args.len == 1 {
-		c.root()
-	} else if os.args.len > 1 {
-		if os.args[1] in c.sub_commands_string || os.args[1].replace('-', '') in c.global_flags_string {
-			os_args, gflags := get_global_flags(c, os.args[1..os.args.len])
-			
-			c.sub_command_handle(gflags, os_args)
-		} else if os.args[1] in c.local_flags_string {
-			c.root()
-		} else {
-			if args_has_hyphen_dash(os.args[1]) && (os.args[1].replace('-','') in c.global_flags_string) == false {
-				println('\n  [!err] unknown flag ${os.args[1]}')
-				exit(1)
-			}
-		}
-	}
+	// exclude the app from the os.args
+	// the os.args[0] is the app itself, 
+	c.runner([]FlagArgs{}, os.args[1..os.args.len])
 }
 
-fn (c &Commander) sub_command_handle(g_flags []FlagArgs, osargs []string) {
+// runner is the helper for the `run` function
+fn (c &Commander) runner(gfls []FlagArgs, osargs []string) {
 	mut x := osargs.clone()
+	mut gflags := gfls.clone()
 
-	// global flags
-	mut total_flags := []FlagArgs{}
+	// append global flags
+	gflags << c.global_flags
 
-	total_flags << g_flags
-
-	for cmd in c.sub_commands {
-		if osargs[0] == cmd.command {
-			x.delete(x.index(osargs[0]))
-
-			if x.len > 0 {
-				args, gfls := get_global_flags(cmd, x)
-
-				total_flags << gfls
-
-				// check if the next arg is in it's subcommands
-				if args.len > 0 {
-					if args[0] in cmd.sub_commands_string{
-						cmd.sub_command_handle(total_flags, args)
-					}
-
-					// otherwise, execute the command itself
-					else {
-						args2, flags := parse_flags(cmd, args)
-						total_flags << flags
-
-						cmd.execute(cmd.function, args2, total_flags)
-					}
+	if osargs.len > 0 {
+		if osargs[0] in c.sub_commands_string {
+			for i in c.sub_commands {
+				if i.command == osargs[0] {
+					i.runner(gflags, osargs[1..osargs.len])
+					break
 				}
-				// otherwise, execute the command itself
-				else {
-					args2, flags := parse_flags(cmd, args)
-					total_flags << flags
-
-					cmd.execute(cmd.function, args2, total_flags)
-				}
-			} else {
-				args, flags := parse_flags(cmd, x)
-				total_flags << flags
-				cmd.execute(cmd.function, args, total_flags)
 			}
+		} else {
+			args, flags := parse_flags(c, x, gflags)
+			c.execute(c.function, args, flags)
 		}
+	} else {
+		args, flags := parse_flags(c, x, gflags)
+		c.execute(c.function, args, flags)
 	}
 }
 
-fn (c &Commander) root() {
-	args, flags := parse_flags(c, os.args)
-
-	c.execute(c.function, args, flags)
-}
-
-fn (c &Commander) execute(f fn(&Commander, []string, []FlagArgs), args []string, flags []FlagArgs) {
-	f (c, args, flags)
+// execute is the command function runner
+// it executes the function associated to the command
+fn (c &Commander) execute(f fn(args []string, flags []FlagArgs), args []string, flags []FlagArgs) {
+	f (args, flags)
 }
