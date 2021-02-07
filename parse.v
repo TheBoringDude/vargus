@@ -83,14 +83,16 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 						if value != '' {
 							// only delete from args if flag data_type is not boolean
 							if x.data_type != .boolean {
-								if args_has_hyphen_dash(value) {
-									value_err('cannot use a flag as a value for a flag')
-								} else {
-									args.delete(args.index(value))
-								}
+								args.delete(args.index(value))
 							}
 						}
-						args.delete(args.index(i))
+						
+						if i in args {
+							args.delete(args.index(i))
+						} else {
+							// show blank error
+							blank_err(osargs[osargs.index(i)-1])
+						}
 					}
 				}
 			}
