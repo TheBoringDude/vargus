@@ -6,22 +6,31 @@ import os
 pub fn (mut c Commander) run() {
 	// exclude the app from the os.args
 	// the os.args[0] is the app itself, 
-	c.runner([]FlagArgs{}, os.args[1..os.args.len])
+	c.runner(c.command, []FlagArgs{}, os.args[1..os.args.len])
 }
 
 // runner is the helper for the `run` function
-fn (c &Commander) runner(gfls []FlagArgs, osargs []string) {
+fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string) {
 	mut x := osargs.clone()
 	mut gflags := gfls.clone()
+
+	mut cmd_str := scmd
 
 	// append global flags
 	gflags << c.global_flags
 
 	if osargs.len > 0 {
+		// help message (--help flag)
+		if osargs[0] in help {
+			c.help(cmd_str, gflags)
+			exit(0)
+		}
+
 		if osargs[0] in c.sub_commands_string {
 			for i in c.sub_commands {
 				if i.command == osargs[0] {
-					i.runner(gflags, osargs[1..osargs.len])
+					cmd_str += ' $i.command'
+					i.runner(cmd_str, gflags, osargs[1..osargs.len])
 					break
 				}
 			}
