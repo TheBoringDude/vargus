@@ -20,8 +20,8 @@ fn required_err(fl_name string, fl_shortarg string) {
 
 
 // value_err shows error about invalid data type value set in a flag
-fn value_err(message string) {
-	println('\n [!value_err] $message')
+fn value_err(flag string, ftype string) {
+	println('\n [!value_err] invalid data type for a $ftype flag ($flag)')
 	exit(1)
 }
 

@@ -26,19 +26,35 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 					value := y[1]
 
 					if flag == long || flag == short {
-						// smart handle for boolean flags
-						// if it is equal, equals to true automatically
-						if x.data_type == .boolean {
-							if value == 'false' || value == 'true' {
-								// do nothing
-							} else {
-								// if the value set is not equal to true or false,
-								// show value error
-								value_err('invalid type value for a boolean flag')
+						// simple validation for set values on flags
+						match x.data_type {
+							.string_var {
+								x.value = value
+							}
+							.integer {
+								if int_validator(value) {
+									x.value = value
+								} else {
+									value_err(flag, 'int')
+								}
+							}
+							.float {
+								if float_validator(value) {
+									x.value = value
+								} else {
+									value_err(flag, 'float')
+								}
+							}
+							.boolean {
+								if value == 'false' || value == 'true' {
+									// do nothing
+								} else {
+									// if the value set is not equal to true or false,
+									// show value error
+									value_err(flag, 'bool')
+								}
 							}
 						}
-						// set value
-						x.value = value
 
 						// append new flag w/ value to flags
 						flags << x
@@ -55,21 +71,42 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 					}
 
 					if i == long || i == short {
-						// smart handle for boolean flags
-						// if it is equal, equals to true automatically
-						if x.data_type == .boolean {
-							if value == 'false' || value == 'true' {
-								x.value = value
-							} else {
-								// if the value set is not equal to true or false,
-								// parse it but next arg will be parsed to args
-								x.value = 'true'
-							}
-						} else {
-							x.value = args[args.index(value)] or {
+						// simple validation for set values on flags
+						val := args[args.index(value)] or {
+							if x.data_type != .boolean {
 								// show blank error
 								blank_err(i)
-								'' // it is needed, 
+							}
+							'' // it is needed, 
+						}
+
+						// validate values
+						match x.data_type {
+							.string_var {
+								x.value = val
+							}
+							.integer {
+								if int_validator(val) {
+									x.value = value
+								} else {
+									value_err(i, 'int')
+								}
+							}
+							.float {
+								if float_validator(val) {
+									x.value = value
+								} else {
+									value_err(i, 'float')
+								}
+							}
+							.boolean {
+								if value == 'false' || value == 'true' {
+									x.value = value
+								} else {
+									// if the value set is not equal to true or false,
+									// parse it but next arg will be parsed to args
+									x.value = 'true'
+								}
 							}
 						}
 
