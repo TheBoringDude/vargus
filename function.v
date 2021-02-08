@@ -4,9 +4,15 @@ import os
 
 // run is the main cli app executor
 pub fn (mut c Commander) run() {
-	// exclude the app from the os.args
-	// the os.args[0] is the app itself, 
-	c.runner(c.command, []FlagArgs{}, os.args[1..os.args.len])
+	// check if c is the root
+	if c.is_root{
+		// exclude the app from the os.args
+		// the os.args[0] is the app itself, 
+		c.runner(c.command, []FlagArgs{}, os.args[1..os.args.len])
+	} else {
+		println('\n [!misused] .run() can only be used on a root commander')
+		exit(1)
+	}
 }
 
 // runner is the helper for the `run` function

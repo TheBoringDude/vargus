@@ -5,6 +5,7 @@ struct Commander {
 	short_desc string
 	long_desc  string
 	function   fn (args []string, flags []FlagArgs)
+	is_root bool
 mut:
 	flags []FlagArgs
 	global_flags []FlagArgs
@@ -28,5 +29,6 @@ pub fn new(cmdConfig CmdConfig) &Commander {
 		short_desc: cmdConfig.short_desc
 		long_desc: cmdConfig.long_desc
 		function: cmdConfig.function
+		is_root: true
 	}
 }
