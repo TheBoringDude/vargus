@@ -142,6 +142,10 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 	// append parsed flags from helper
 	flags << prsd_helper_flags
 
+	// another checker for flags
+	validate_final_args(args)
+
+	// return the final args and flags parsed
 	return args, flags
 }
 

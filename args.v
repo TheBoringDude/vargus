@@ -9,3 +9,15 @@ fn args_has_hyphen_dash(a string) bool {
 
 	return false
 }
+
+
+// validate_final_args checks the args for a final one
+//   this is a final validation, so any args with '-' or '--'
+//   will be considered as unknown
+fn validate_final_args(args []string) {
+	for i in args {
+		if args_has_hyphen_dash(i) {
+			unknown_err(i)
+		}
+	}
+}

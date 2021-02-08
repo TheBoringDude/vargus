@@ -37,3 +37,10 @@ fn blank_err(flag string) {
 fn flag_err(flag string) {
 	panic('\n [!flag_err] flag name: $flag is missing in the flags set for command')
 }
+
+
+// unknown_err shows error if flag in args is unknown
+fn unknown_err(flag string) {
+	println('\n [!err] unknown flag: $flag')
+	exit(1)
+}
