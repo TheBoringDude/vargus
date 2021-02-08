@@ -31,3 +31,9 @@ fn blank_err(flag string) {
 	println('\n [!blank] no value set for flag: $flag')
 	exit(1)
 }
+
+
+// flag_err shows error if flag is missing from the defined flags
+fn flag_err(flag string) {
+	panic('\n [!flag_err] flag name: $flag is missing in the flags set for command')
+}
