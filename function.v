@@ -14,23 +14,20 @@ fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string) {
 	mut x := osargs.clone()
 	mut gflags := gfls.clone()
 
-	mut cmd_str := scmd
-
 	// append global flags
 	gflags << c.global_flags
 
 	if osargs.len > 0 {
 		// help message (--help flag)
 		if osargs[0] in help {
-			c.help(cmd_str, gflags)
+			c.help(scmd, gflags)
 			exit(0)
 		}
 
 		if osargs[0] in c.sub_commands_string {
 			for i in c.sub_commands {
 				if i.command == osargs[0] {
-					cmd_str += ' $i.command'
-					i.runner(cmd_str, gflags, osargs[1..osargs.len])
+					i.runner(scmd + ' $i.command', gflags, osargs[1..osargs.len])
 					break
 				}
 			}
