@@ -26,35 +26,8 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 					value := y[1]
 
 					if flag == long || flag == short {
-						// simple validation for set values on flags
-						match x.data_type {
-							.string_var {
-								x.value = value
-							}
-							.integer {
-								if int_validator(value) {
-									x.value = value
-								} else {
-									value_err(flag, 'int')
-								}
-							}
-							.float {
-								if float_validator(value) {
-									x.value = value
-								} else {
-									value_err(flag, 'float')
-								}
-							}
-							.boolean {
-								if value == 'false' || value == 'true' {
-									// do nothing
-								} else {
-									// if the value set is not equal to true or false,
-									// show value error
-									value_err(flag, 'bool')
-								}
-							}
-						}
+						// get value
+						x.value = parse_value(value, x.data_type, flag, '=')
 
 						// append new flag w/ value to flags
 						flags << x
@@ -77,38 +50,11 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 								// show blank error
 								blank_err(i)
 							}
-							'' // it is needed, 
+							'' // it is needed, not sure xD
 						}
 
-						// validate values
-						match x.data_type {
-							.string_var {
-								x.value = val
-							}
-							.integer {
-								if int_validator(val) {
-									x.value = value
-								} else {
-									value_err(i, 'int')
-								}
-							}
-							.float {
-								if float_validator(val) {
-									x.value = value
-								} else {
-									value_err(i, 'float')
-								}
-							}
-							.boolean {
-								if value == 'false' || value == 'true' {
-									x.value = value
-								} else {
-									// if the value set is not equal to true or false,
-									// parse it but next arg will be parsed to args
-									x.value = 'true'
-								}
-							}
-						}
+						// get value
+						x.value = parse_value(val, x.data_type, i, '')
 
 						// append new flag w/ value to flags
 						flags << x
@@ -147,6 +93,52 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 
 	// return the final args and flags parsed
 	return args, flags
+}
+
+
+// parse_value is a value parser and validator
+//   it checks if set value's data_type is similar to flag's
+fn parse_value(val string, dtype FlagDataType, flag string, flag_op string) string {
+	mut value := ''
+
+	// validate values
+	match dtype {
+		.string_var {
+			value = val
+		}
+		.integer {
+			if int_validator(val) {
+				value = val
+			} else {
+				value_err(flag, 'int')
+			}
+		}
+		.float {
+			if float_validator(val) {
+				value = val
+			} else {
+				value_err(flag, 'float')
+			}
+		}
+		.boolean {
+			if val == 'false' || val == 'true' {
+				value = val
+			} else {
+				if flag_op == '=' {
+					// if the value set is not equal to true or false,
+					// show value error
+					value_err(flag, 'bool')
+				} else {
+					// if the value set is not equal to true or false,
+					// parse it but next arg will be parsed to args
+					value = 'true'
+				}
+			}
+		}
+	}
+
+	// return value
+	return value
 }
 
 // parse_helper is a helper to the main parser

@@ -55,31 +55,23 @@ fn getter(flags []FlagArgs, name string, dtype FlagDataType) string {
 // get_int gets the value of the flag
 //    name: name of flag / short_arg
 pub fn (f []FlagArgs) get_int(name string) int {
-	x := getter(f, name, .integer)
-
-	return x.int()
+	return getter(f, name, .integer).int()
 }
 
 // get_bool gets the value of the flag
 //    name: name of flag / short_arg
 pub fn (f []FlagArgs) get_bool(name string) bool {
-	x := getter(f, name, .boolean)
-
-	return x.bool()
+	return getter(f, name, .boolean).bool()
 }
 
 // get_string gets the value of the flag
 //    name: name of flag / short_arg
 pub fn (f []FlagArgs) get_string(name string) string {
-	x := getter(f, name, .string_var)
-
-	return x
+	return getter(f, name, .string_var)
 }
 
 // get_float gets the value of the flag
 //    name: name of flag / short_arg
 pub fn (f []FlagArgs) get_float(name string) f32 {
-	x := getter(f, name, .float)
-
-	return x.f32()
+	return getter(f, name, .float).f32()
 }

@@ -17,14 +17,13 @@ pub fn (mut c Commander) run() {
 
 // runner is the helper for the `run` function
 fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string) {
-	mut x := osargs.clone()
 	mut gflags := gfls.clone()
 
 	// append global flags
 	gflags << c.global_flags
 
 	if osargs.len > 0 {
-		// help message (--help flag)
+		// help message ([--help, -h, help] flag)
 		if osargs[0] in help {
 			c.help(scmd, gflags)
 			exit(0)
@@ -37,14 +36,15 @@ fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string) {
 					break
 				}
 			}
-		} else {
-			args, flags := parse_flags(c, x, gflags)
-			c.execute(c.function, args, flags)
 		}
-	} else {
-		args, flags := parse_flags(c, x, gflags)
-		c.execute(c.function, args, flags)
 	}
+
+	// this will be called if nothing happened above
+	args, flags := parse_flags(c, osargs, gflags)
+	c.execute(c.function, args, flags)
+
+	// exit app
+	exit(0)
 }
 
 // execute is the command function runner
