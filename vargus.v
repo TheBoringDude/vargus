@@ -9,9 +9,7 @@ struct Commander {
 mut:
 	flags []FlagArgs
 	global_flags []FlagArgs
-	local_flags_string []string
 	global_flags_string []string
-	extracted_flags map[string]string
 	sub_commands []&Commander
 	sub_commands_string []string
 }
