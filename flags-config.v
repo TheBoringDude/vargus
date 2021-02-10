@@ -1,5 +1,6 @@
 module vargus
 
+// IntFlagConfig struct config for integer flags.
 pub struct IntFlagConfig {
 	name string
 	short_arg string
@@ -8,6 +9,7 @@ pub struct IntFlagConfig {
 	help string
 }
 
+// StringFlagConfig struct config for integer flags.
 pub struct StringFlagConfig {
 	name string
 	short_arg string
@@ -16,6 +18,7 @@ pub struct StringFlagConfig {
 	help string
 }
 
+// FloatFlagConfig struct config for integer flags.
 pub struct FloatFlagConfig {
 	name string
 	short_arg string
@@ -24,6 +27,7 @@ pub struct FloatFlagConfig {
 	help string
 }
 
+// BoolFlagConfig struct config for integer flags.
 pub struct BoolFlagConfig {
 	name string
 	short_arg string
