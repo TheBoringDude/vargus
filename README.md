@@ -4,7 +4,7 @@ Simple [Experimental] Commander for VLANG
 
 ## Usage
 
-- Creating a root commander instance
+### Creating a root commander instance
 
 ```v
 root := vargus.CmdConfig{
@@ -19,13 +19,15 @@ root := vargus.CmdConfig{
 mut cmder := vargus.new(root)
 ```
 
-All commands created with new are automatically defined as main root.
+All commands created with `vargus.new()` are automatically defined as main root command.
 
-- Adding sub commands (`[parent_command].add_command(CmdConfig)`)
+#### Info: You cannot explicitly add sub_commands or flags directly from structs. All actions are done through functions.
+
+### Adding sub commands (`[parent_command].add_command(CmdConfig)`)
 
 You can only add commands and sub_commands once a `root` command is defined.
 
-```
+```v
 mut generate := cmder.add_command(
     command: 'generate'
     short_desc: 'generate  desc'
@@ -36,6 +38,78 @@ mut generate := cmder.add_command(
 )
 ```
 
-NoTe: if you want to add sub_commands or flags to a command, you should pass it to a variable. If not, you can just ignore the variable and just call the function `add_command`
+NoTe: if you want to add sub_commands or flags to a command, you should pass it to a variable. If not, you can just ignore the variable and just call the function `[parentcommand].add_command`
+
+### Adding flags
+
+Vargus supports adding local and global flags.
+
+- **Flag Configurations**
+
+  - IntFlagConfig
+
+  ```v
+  pub struct IntFlagConfig {
+      name string
+      short_arg string
+      required bool
+      default_value int
+      help string
+  }
+  ```
+
+  - StringFlagConfig
+
+  ```v
+  pub struct StringFlagConfig {
+      name string
+      short_arg string
+      required bool
+      default_value string
+      help string
+  }
+  ```
+
+  - FloatFlagConfig
+
+  ```v
+  pub struct FloatFlagConfig {
+      name string
+      short_arg string
+      required bool
+      default_value f32
+      help string
+  }
+  ```
+
+  - BoolFlagConfig
+
+  ```v
+  pub struct BoolFlagConfig {
+      name string
+      short_arg string
+      required bool
+      default_value bool
+      help string
+  }
+  ```
+
+#### Local Flags
+
+- `[command].add_local_flag_int(fc IntFlagConfig)`
+- `[command].add_local_flag_string(fc StringFlagConfig)`
+- `[command].add_local_flag_float(fc FloatFlagConfig)`
+- `[command].add_local_flag_bool(fc BoolFlagConfig)`
+
+#### Global Flags
+
+- `[command].add_global_flag_int(fc IntFlagConfig)`
+- `[command].add_global_flag_string(fc StringFlagConfig)`
+- `[command].add_global_flag_float(fc FloatFlagConfig)`
+- `[command].add_global_flag_bool(fc BoolFlagConfig)`
+
+## How does it work?
+
+`vargus` utilizes only the `os` module, primarily the `os.args`.
 
 ### &copy; TheBoringDude
