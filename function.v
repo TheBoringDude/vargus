@@ -5,7 +5,7 @@ import os
 // run is the main cli app executor
 pub fn (mut c Commander) run() {
 	// check if c is the root
-	if c.is_root{
+	if c.is_root {
 		// exclude the app from the os.args
 		// the os.args[0] is the app itself, 
 		c.runner(c.command, []FlagArgs{}, os.args[1..os.args.len])
@@ -38,7 +38,6 @@ fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string) {
 			}
 		}
 	}
-
 	// this will be called if nothing happened above
 	args, flags := parse_flags(c, osargs, gflags)
 	c.execute(c.function, args, flags)
@@ -49,6 +48,6 @@ fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string) {
 
 // execute is the command function runner
 // it executes the function associated to the command
-fn (c &Commander) execute(f fn(args []string, flags []FlagArgs), args []string, flags []FlagArgs) {
-	f (args, flags)
+fn (c &Commander) execute(f fn (x []string, y []FlagArgs), args []string, flags []FlagArgs) {
+	f(args, flags)
 }

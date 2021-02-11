@@ -24,7 +24,6 @@ pub fn (c &Commander) help(cmd_str string, gfls []FlagArgs) {
 	if c.flags.len + gfls.len > 0 {
 		usage += ' [-flags]'
 	}
-
 	// show help message
 	println('\n$c.long_desc')
 	println('\n Usage: $usage')
@@ -38,16 +37,12 @@ pub fn (c &Commander) help(cmd_str string, gfls []FlagArgs) {
 			println('     $i.command ${get_space(i.command.len)} $i.short_desc')
 		}
 	}
-	
-
 	// local flags
 	if c.flags.len > 0 {
 		println('\n Flags:')
 
 		help_print_flag(c.flags)
 	}
-
-
 	// global flags
 	if gfls.len > 0 {
 		println('\n Global Flags:')
@@ -55,7 +50,6 @@ pub fn (c &Commander) help(cmd_str string, gfls []FlagArgs) {
 		help_print_flag(gfls)
 	}
 }
-
 
 // help_print_flag is a helper for printing flags in a cool style
 fn help_print_flag(flags []FlagArgs) {
@@ -66,12 +60,12 @@ fn help_print_flag(flags []FlagArgs) {
 			arg += '--$i.name'
 		}
 		if i.short_arg != '' {
-			if i.name != ''{
+			if i.name != '' {
 				arg += ', '
 			}
 			arg += '-$i.short_arg'
 		}
-		
+
 		println('     $arg ${get_space(arg.len)} $i.help')
 	}
 }

@@ -21,7 +21,7 @@ mut:
 	default_value string
 	data_type     FlagDataType
 	help          string
-	value string
+	value         string
 }
 
 // getter gets the string value of the flag

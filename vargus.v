@@ -4,13 +4,13 @@ struct Commander {
 	command    string
 	short_desc string
 	long_desc  string
-	function   fn (args []string, flags []FlagArgs)
-	is_root bool
+	function   fn (x []string, y []FlagArgs)
+	is_root    bool
 mut:
-	flags []FlagArgs
-	global_flags []FlagArgs
+	flags               []FlagArgs
+	global_flags        []FlagArgs
 	global_flags_string []string
-	sub_commands []&Commander
+	sub_commands        []&Commander
 	sub_commands_string []string
 }
 
@@ -18,7 +18,7 @@ pub struct CmdConfig {
 	command    string
 	short_desc string
 	long_desc  string
-	function   fn (args []string, flags []FlagArgs)
+	function   fn (x []string, y []FlagArgs)
 }
 
 pub fn new(cmdConfig CmdConfig) &Commander {

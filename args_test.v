@@ -1,26 +1,25 @@
 module vargus
 
 struct TestCase {
-	case string
+	case    string
 	exp_out bool
 }
 
-
 fn test_args_has_hyphen_dash() {
 	test_cases := [
-		TestCase {
+		TestCase{
 			case: '-r'
 			exp_out: true
 		},
-		TestCase {
+		TestCase{
 			case: '--r'
 			exp_out: true
 		},
-		TestCase {
+		TestCase{
 			case: '---r'
 			exp_out: false
 		},
-		TestCase {
+		TestCase{
 			case: 'r'
 			exp_out: false
 		},

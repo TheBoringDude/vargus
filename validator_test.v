@@ -1,69 +1,70 @@
 module vargus
 
 struct TestCase {
-	case string
+	case    string
 	exp_out bool
 }
 
 // TEST CASES FOR INT_VALIDATOR
 fn test_int_validator() {
 	test_cases := [
-		TestCase {
+		TestCase{
 			case: '1'
 			exp_out: true
 		},
-		TestCase {
+		TestCase{
 			case: '-1'
 			exp_out: true
 		},
-		TestCase {
+		TestCase{
 			case: '-1.0'
 			exp_out: false
 		},
-		TestCase {
+		TestCase{
 			case: '1-0'
 			exp_out: false
 		},
 	]
-	
+
 	for t in test_cases {
 		assert int_validator(t.case) == t.exp_out
 	}
 }
+
 // TEST CASES FOR INT_VALIDATOR
 
 // TEST CASES FOR FLOAT_VALIDATOR
 fn test_float_validator_basic() {
 	test_cases := [
-		TestCase {
+		TestCase{
 			case: '1.0'
 			exp_out: true
 		},
-		TestCase {
+		TestCase{
 			case: '-1.0'
 			exp_out: true
 		},
-		TestCase {
+		TestCase{
 			case: '-1..0'
 			exp_out: false
 		},
-		TestCase {
+		TestCase{
 			case: '1.-0'
 			exp_out: false
 		},
-		TestCase {
+		TestCase{
 			case: '1e9'
 			exp_out: true
 		},
-		TestCase {
+		TestCase{
 			case: '1-e9'
 			exp_out: false
 		},
-		TestCase {
+		TestCase{
 			case: '1e-9'
 			exp_out: true
 		},
-		TestCase {
+		TestCase{
 			case: '-1.0-e-9'
 			exp_out: false
 		},

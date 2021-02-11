@@ -1,0 +1,2 @@
+FORMATTER: v fmt -w
+FILE_EXT: .v
