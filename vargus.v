@@ -1,5 +1,6 @@
 module vargus
 
+
 struct Commander {
 	command    string
 	short_desc string
@@ -12,6 +13,8 @@ mut:
 	global_flags_string []string
 	sub_commands        []&Commander
 	sub_commands_string []string
+	hooks CmdHooks
+	persistent_hooks PersistentCmdHooks
 }
 
 pub struct CmdConfig {
