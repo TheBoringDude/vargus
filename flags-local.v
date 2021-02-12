@@ -2,8 +2,8 @@ module vargus
 
 // add_local_flag_int handles adding of local flags to the command with integer value
 pub fn (mut c Commander) add_local_flag_int(fc IntFlagConfig) {
-	// initialize new flag instance
-	flag := FlagArgs{
+	// append to list of flags
+	c.flags << FlagArgs{
 		name: fc.name
 		short_arg: fc.short_arg
 		required: fc.required
@@ -12,15 +12,12 @@ pub fn (mut c Commander) add_local_flag_int(fc IntFlagConfig) {
 		flag_type: .local
 		help: fc.help
 	}
-
-	// append to list of flags
-	c.flags << flag
 }
 
 // add_local_flag_string handles adding of local flags to the command with string value
 pub fn (mut c Commander) add_local_flag_string(fc StringFlagConfig) {
-	// initialize new flag instance
-	flag := FlagArgs{
+	// append to list of flags
+	c.flags << FlagArgs{
 		name: fc.name
 		short_arg: fc.short_arg
 		required: fc.required
@@ -29,15 +26,12 @@ pub fn (mut c Commander) add_local_flag_string(fc StringFlagConfig) {
 		flag_type: .local
 		help: fc.help
 	}
-
-	// append to list of flags
-	c.flags << flag
 }
 
 // add_local_flag_float handles adding of local flags to the command with float value
 pub fn (mut c Commander) add_local_flag_float(fc FloatFlagConfig) {
-	// initialize new flag instance
-	flag := FlagArgs{
+	// append to list of flags
+	c.flags << FlagArgs{
 		name: fc.name
 		short_arg: fc.short_arg
 		required: fc.required
@@ -46,15 +40,12 @@ pub fn (mut c Commander) add_local_flag_float(fc FloatFlagConfig) {
 		flag_type: .local
 		help: fc.help
 	}
-
-	// append to list of flags
-	c.flags << flag
 }
 
 // add_local_flag_bool handles adding of local flags to the command with boolean value
 pub fn (mut c Commander) add_local_flag_bool(fc BoolFlagConfig) {
-	// initialize new flag instance
-	flag := FlagArgs{
+	// append to list of flags
+	c.flags << FlagArgs{
 		name: fc.name
 		short_arg: fc.short_arg
 		required: fc.required
@@ -63,7 +54,4 @@ pub fn (mut c Commander) add_local_flag_bool(fc BoolFlagConfig) {
 		flag_type: .local
 		help: fc.help
 	}
-
-	// append to list of flags
-	c.flags << flag
 }

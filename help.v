@@ -6,16 +6,11 @@ const (
 
 // get_space calculates space for better spacing in print outputs
 fn get_space(cmdlen int) string {
-	mut space := ''
-	for _ in 0 .. 40 - cmdlen {
-		space += ' '
-	}
-
-	return space
+	return ' '.repeat(40-cmdlen)
 }
 
 // help prints the help info once triggered
-pub fn (c &Commander) help(cmd_str string, gfls []FlagArgs) {
+fn (c &Commander) help(cmd_str string, gfls []FlagArgs) {
 	// parse usage
 	mut usage := cmd_str
 	if c.sub_commands.len > 0 {
@@ -30,7 +25,7 @@ pub fn (c &Commander) help(cmd_str string, gfls []FlagArgs) {
 
 	// sub commands
 	if c.sub_commands.len > 0 {
-		println('\n Commands:')
+		println('\nCommands:')
 
 		for i in c.sub_commands {
 			// calculate spacing
@@ -39,13 +34,13 @@ pub fn (c &Commander) help(cmd_str string, gfls []FlagArgs) {
 	}
 	// local flags
 	if c.flags.len > 0 {
-		println('\n Flags:')
+		println('\nFlags:')
 
 		help_print_flag(c.flags)
 	}
 	// global flags
 	if gfls.len > 0 {
-		println('\n Global Flags:')
+		println('\nGlobal Flags:')
 
 		help_print_flag(gfls)
 	}

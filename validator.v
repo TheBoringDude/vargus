@@ -34,6 +34,7 @@ fn int_validator(x string) bool {
 }
 
 // float_validator is a simple validator for float strings
+// TODO: IMPROVE THIS ONE
 fn float_validator(x string) bool {
 	// float numbers should contain only a single '.'
 	if x.count('.') > 1 {

@@ -8,6 +8,7 @@ struct Commander {
 	function   fn (x []string, y []FlagArgs)
 	is_root    bool
 mut:
+	exec_func bool
 	flags               []FlagArgs
 	global_flags        []FlagArgs
 	global_flags_string []string
@@ -25,11 +26,18 @@ pub struct CmdConfig {
 }
 
 pub fn new(cmdConfig CmdConfig) &Commander {
+	a := CmdConfig{}
+
 	return &Commander{
 		command: cmdConfig.command
 		short_desc: cmdConfig.short_desc
 		long_desc: cmdConfig.long_desc
-		function: cmdConfig.function
 		is_root: true
+		function: cmdConfig.function
+		exec_func: if a.function != cmdConfig.function {
+			true
+		} else {
+			false
+		}
 	}
 }

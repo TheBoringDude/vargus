@@ -43,7 +43,12 @@ fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string, persiste
 	}
 	// this will be called if nothing happened above
 	args, flags := parse_flags(c, osargs, gflags)
-	c.execute(c.function, args, flags, p_hooks)
+	
+	if c.exec_func {
+		c.execute(c.function, args, flags, p_hooks)
+	} else {
+		c.help(scmd, gflags)
+	}
 
 	// exit app
 	exit(0)
