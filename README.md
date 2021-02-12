@@ -1,6 +1,6 @@
 # vargus
 
-Simple [Experimental] Commander for VLANG
+A Simple [Experimental] Commander for VLANG that just works
 
 ## Usage
 
@@ -108,8 +108,33 @@ Vargus supports adding local and global flags.
 - `[command].add_global_flag_float(fc FloatFlagConfig)`
 - `[command].add_global_flag_bool(fc BoolFlagConfig)`
 
+### Adding Command Hooks (`[command].add_hooks(HooksConfig)`)
+
+Vargus supports adding hooks to your command.
+
+**\*pre-run** hooks will be run before executing the command function
+
+**\*post-run** hooks will be run after the execution of the command function
+
+- **HooksConfig**
+  ```v
+  pub struct HooksConfig {
+      hooks_type      CmdHooksType
+      function        fn (x []string, y []FlagArgs)
+  }
+  ```
+- **CmdHooksType**
+  ```v
+  enum CmdHooksType {
+      pre_run
+      post_run
+      persistent_pre_run
+      persistent_post_run
+  }
+  ```
+
 ## How does it work?
 
-`vargus` utilizes only the `os` module, primarily the `os.args`.
+`vargus` utilizes only the `os` module, primarily the `os.args`
 
 ### &copy; TheBoringDude
