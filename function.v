@@ -40,7 +40,7 @@ fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string, persiste
 				}
 			}
 		} else {
-			if !args_has_hyphen_dash(osargs[0]) {
+			if !args_has_hyphen_dash(osargs[0]) && !c.allow_next_args {
 				command_err(osargs[0])
 			}
 		}

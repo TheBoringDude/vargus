@@ -1,16 +1,35 @@
 module vargus
 
-// add_command adds a command to the main vargus commander instance
-pub fn (mut c Commander) add_command(cmdConfig CmdConfig) &Commander {
-	a := CmdConfig{}
+// new creates a new commander root instance
+pub fn new(cmdConfig CmdConfig) &Commander {
+	t := CmdConfig{}
 
-	// create new commander instance
-	cmd := &Commander{
+	return &Commander {
 		command: cmdConfig.command
 		short_desc: cmdConfig.short_desc
 		long_desc: cmdConfig.long_desc
+		allow_next_args: cmdConfig.allow_next_args
+		is_root: true
 		function: cmdConfig.function
-		exec_func: if a.function != cmdConfig.function {
+		exec_func: if t.function != cmdConfig.function {
+			true
+		} else {
+			false
+		}
+	}
+}
+
+// add_command adds a command to the main vargus commander instance
+pub fn (mut c Commander) add_command(cmdConfig CmdConfig) &Commander {
+	t := CmdConfig{}
+
+	mut cmd := &Commander {
+		command: cmdConfig.command
+		short_desc: cmdConfig.short_desc
+		long_desc: cmdConfig.long_desc
+		allow_next_args: cmdConfig.allow_next_args
+		function: cmdConfig.function
+		exec_func: if t.function != cmdConfig.function {
 			true
 		} else {
 			false
