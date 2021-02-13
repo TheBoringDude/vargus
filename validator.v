@@ -41,33 +41,5 @@ fn float_validator(x string) bool {
 		return false
 	}
 
-	mut xx := ''
-
-	for k, i in x {
-		if (i == `-` || i == `+`) && k != 0 {
-			if x[k - 1] == `.` {
-				break
-			} else if x[k - 1] != `e` {
-				return false
-			} else {
-				mut x_x := x.split('')
-
-				if i == `-` {
-					x_x.delete(x_x.index('-'))
-				} else if i == `+` {
-					x_x.delete(x_x.index('+'))
-				}
-
-				xx = x_x.join('')
-				break
-			}
-		}
-	}
-
-	if xx != '' {
-		// remove dot & e for number validation
-		return valid_number(xx.replace('.', '').replace('e', ''))
-	}
-	// remove dot & e for number validation
 	return valid_number(x.replace('.', '').replace('e', ''))
 }

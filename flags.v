@@ -72,6 +72,6 @@ pub fn (f []FlagArgs) get_string(name string) string {
 
 // get_float gets the value of the flag
 //    name: name of flag / short_arg
-pub fn (f []FlagArgs) get_float(name string) f32 {
-	return getter(f, name, .float).f32()
+pub fn (f []FlagArgs) get_float(name string) f64 {
+	return getter(f, name, .float).f64()
 }

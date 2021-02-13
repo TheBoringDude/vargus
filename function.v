@@ -39,6 +39,10 @@ fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string, persiste
 					break
 				}
 			}
+		} else {
+			if !args_has_hyphen_dash(osargs[0]) {
+				command_err(osargs[0])
+			}
 		}
 	}
 	// this will be called if nothing happened above

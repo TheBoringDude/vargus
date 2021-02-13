@@ -21,7 +21,7 @@ fn (c &Commander) help(cmd_str string, gfls []FlagArgs) {
 	}
 	// show help message
 	println('\n$c.long_desc')
-	println('\n Usage: $usage')
+	println('\nUsage:\n     $usage')
 
 	// sub commands
 	if c.sub_commands.len > 0 {

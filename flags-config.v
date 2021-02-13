@@ -23,7 +23,7 @@ pub struct FloatFlagConfig {
 	name          string
 	short_arg     string
 	required      bool
-	default_value f32
+	default_value f64
 	help          string
 }
 

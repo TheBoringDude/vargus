@@ -40,3 +40,10 @@ fn unknown_err(flag string) {
 	println('\n [!err] unknown flag: $flag')
 	exit(1)
 }
+
+// command_err shows error if command is unknown or not in sub_commands
+fn command_err(command string) {
+	println('\n [!err] unknown command: $command')
+	exit(1)
+}
+
