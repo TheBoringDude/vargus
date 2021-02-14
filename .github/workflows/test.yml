@@ -13,14 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      VFLAGS: -cc tcc -no-retry-compilation
+      VFLAGS: -cc tcc
     steps:
       - name: Checkout V
         uses: actions/checkout@v2
         with:
           repository: vlang/v
+      - uses: actions/checkout@v2
       - name: Build local V
         run: make -j4
-      - uses: actions/checkout@v2
       - name: Run all tests
         run: ./v -stats test .
