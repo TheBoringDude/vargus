@@ -1,6 +1,6 @@
 module main
 
-import vargus
+import theboringdude.vargus
 
 fn handler(args []string) {
 }
