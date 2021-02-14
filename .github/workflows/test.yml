@@ -3,10 +3,10 @@ name: test
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
     branches:
-    - master
+      - master
 
 jobs:
   ubuntu-tcc:
@@ -15,11 +15,12 @@ jobs:
     env:
       VFLAGS: -cc tcc -no-retry-compilation
     steps:
-    -name: Checkout V
-    with:
-      repository: vlang/v
-    - name: Build local V
-      run: make -j4
-    - uses: actions/checkout@v2
-    - name: Run all tests
-      run: ./v -stats test .
+      - name: Checkout V
+        uses: actions/checkout@v2
+        with:
+          repository: vlang/v
+      - name: Build local V
+        run: make -j4
+      - uses: actions/checkout@v2
+      - name: Run all tests
+        run: ./v -stats test .
