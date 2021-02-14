@@ -28,7 +28,7 @@ jobs:
         run: make -j4
 
       - name: Install vargus
-        run: ./v install theboringdude.vargus
+        run: ./v install TheBoringDude.vargus
 
       - name: Build and run sample file
         run: ./v run vargus/example/sample.v
