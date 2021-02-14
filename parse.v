@@ -14,6 +14,8 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 	for i in osargs {
 		for ic, c in all_flags {
 			mut x := c
+			mut found := false
+			mut flag_value := ''
 
 			long := '--$c.name'
 			short := '-$c.short_arg'
@@ -23,29 +25,23 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 				if '=' in i {
 					y := args[args.index(i)].split('=')
 					flag := y[0]
-					value := y[1]
+					flag_value = y[1]
 
 					if flag == long || flag == short {
-						// get value
-						x.value = parse_value(value, x.data_type, flag, '=')
-
-						// append new flag w/ value to flags
-						flags << x
-
-						// remove old flag w/ value from all
-						all_flags.delete(ic)
+						// set found
+						found = true
 
 						// remove from osargs
 						args.delete(args.index(i))
 					}
 				} else {
-					value := args[args.index(i)+1] or {
+					val := args[args.index(i)+1] or {
 						''
 					}
 
 					if i == long || i == short {
 						// simple validation for set values on flags
-						val := args[args.index(value)] or {
+						flag_value = args[args.index(val)] or {
 							if x.data_type != .boolean {
 								// show blank error
 								blank_err(i)
@@ -53,20 +49,14 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 							'' // it is needed, not sure xD
 						}
 
-						// get value
-						x.value = parse_value(val, x.data_type, i, '')
-
-						// append new flag w/ value to flags
-						flags << x
-
-						// remove old flag w/ value from all
-						all_flags.delete(ic)
+						// set found
+						found = true
 
 						// remove from osargs
-						if value != '' {
+						if val != '' {
 							// only delete from args if flag data_type is not boolean
 							if x.data_type != .boolean {
-								args.delete(args.index(value))
+								args.delete(args.index(val))
 							}
 						}
 						
@@ -77,6 +67,18 @@ fn parse_flags(cmd &Commander, osargs []string, gflags []FlagArgs) ([]string, []
 							blank_err(osargs[osargs.index(i)-1])
 						}
 					}
+				}
+
+				// if flag is present / parsed
+				if found {
+					// get value
+					x.value = parse_value(flag_value, x.data_type, i, '')
+
+					// append new flag w/ value to flags
+					flags << x
+
+					// remove old flag w/ value from all
+					all_flags.delete(ic)
 				}
 			}
 		}
