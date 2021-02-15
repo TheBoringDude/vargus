@@ -21,6 +21,34 @@ pub fn new(cmdConfig CmdConfig) &Commander {
 		} else {
 			false
 		}
+		hooks: CmdHooks {
+			pre_run: cmdConfig.hooks.pre_run
+			use_pre_run: if t.hooks.pre_run != cmdConfig.hooks.pre_run {
+				true
+			} else {
+				false
+			}
+			post_run: cmdConfig.hooks.post_run
+			use_post_run: if t.hooks.post_run != cmdConfig.hooks.post_run {
+				true
+			} else {
+				false
+			}
+		}
+		persistent_hooks: PersistentCmdHooks {
+			persistent_pre_run: cmdConfig.hooks.persistent_pre_run
+			use_persistent_pre_run: if t.hooks.persistent_pre_run != cmdConfig.hooks.persistent_pre_run {
+				true
+			} else {
+				false
+			}
+			persistent_post_run: cmdConfig.hooks.persistent_post_run
+			use_persistent_post_run: if t.hooks.persistent_post_run != cmdConfig.hooks.persistent_post_run {
+				true
+			} else {
+				false
+			}
+		}
 		config: CommandConfig {
 			errors: ErrorConfig {
 				required: cmdConfig.config.errors.required
@@ -104,6 +132,34 @@ pub fn (mut c Commander) add_command(cmdConfig CmdConfig) &Commander {
 			true
 		} else {
 			false
+		}
+		hooks: CmdHooks {
+			pre_run: cmdConfig.hooks.pre_run
+			use_pre_run: if t.hooks.pre_run != cmdConfig.hooks.pre_run {
+				true
+			} else {
+				false
+			}
+			post_run: cmdConfig.hooks.post_run
+			use_post_run: if t.hooks.post_run != cmdConfig.hooks.post_run {
+				true
+			} else {
+				false
+			}
+		}
+		persistent_hooks: PersistentCmdHooks {
+			persistent_pre_run: cmdConfig.hooks.persistent_pre_run
+			use_persistent_pre_run: if t.hooks.persistent_pre_run != cmdConfig.hooks.persistent_pre_run {
+				true
+			} else {
+				false
+			}
+			persistent_post_run: cmdConfig.hooks.persistent_post_run
+			use_persistent_post_run: if t.hooks.persistent_post_run != cmdConfig.hooks.persistent_post_run {
+				true
+			} else {
+				false
+			}
 		}
 		config: CommandConfig {
 			errors: ErrorConfig {
