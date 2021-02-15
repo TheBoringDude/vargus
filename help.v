@@ -5,18 +5,18 @@ const (
 )
 
 // get_space calculates space for better spacing in print outputs
-fn get_space(cmdlen int) string {
+pub fn get_space(cmdlen int) string {
 	return ' '.repeat(40-cmdlen)
 }
 
 // help prints the help info once triggered
-fn (c &Commander) help(cmd_str string, gfls []FlagArgs) {
+fn (c &Commander) help(cmd_str string, local_flags []FlagArgs, global_flags []FlagArgs) {
 	// parse usage
 	mut usage := cmd_str
 	if c.sub_commands.len > 0 {
 		usage += ' [command]'
 	}
-	if c.flags.len + gfls.len > 0 {
+	if local_flags.len + global_flags.len > 0 {
 		usage += ' [-flags]'
 	}
 	// show help message
@@ -33,21 +33,21 @@ fn (c &Commander) help(cmd_str string, gfls []FlagArgs) {
 		}
 	}
 	// local flags
-	if c.flags.len > 0 {
+	if local_flags.len > 0 {
 		println('\nFlags:')
 
-		help_print_flag(c.flags)
+		help_print_flag(local_flags)
 	}
 	// global flags
-	if gfls.len > 0 {
+	if global_flags.len > 0 {
 		println('\nGlobal Flags:')
 
-		help_print_flag(gfls)
+		help_print_flag(global_flags)
 	}
 }
 
 // help_print_flag is a helper for printing flags in a cool style
-fn help_print_flag(flags []FlagArgs) {
+pub fn help_print_flag(flags []FlagArgs) {
 	for i in flags {
 		// parse flag argument
 		mut arg := ''
