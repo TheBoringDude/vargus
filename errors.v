@@ -15,19 +15,16 @@ fn (c &Commander) required_err(fl_name string, fl_shortarg string) {
 	}
 
 	println('\n [!err] flag: $flag_str is required but is not set')
-	exit(0)
 }
 
 // value_err shows error about invalid data type value set in a flag
 fn (c &Commander) value_err(flag string, ftype string) {
 	println('\n [!value_err] invalid data type for a $ftype flag ($flag)')
-	exit(1)
 }
 
 // blank_err shows error if no value is set to the flag
 fn (c &Commander) blank_err(flag string) {
 	println('\n [!blank] no value set for flag: $flag')
-	exit(1)
 }
 
 // flag_err shows error if flag is missing from the defined flags
@@ -38,12 +35,10 @@ fn flag_err(flag string) {
 // unknown_err shows error if flag in args is unknown
 fn (c &Commander) unknown_err(flag string) {
 	println('\n [!err] unknown flag: $flag')
-	exit(1)
 }
 
 // command_err shows error if command is unknown or not in sub_commands
 fn (c &Commander) command_err(command string) {
 	println('\n [!err] unknown command: $command')
-	exit(1)
 }
 

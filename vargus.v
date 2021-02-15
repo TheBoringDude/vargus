@@ -22,11 +22,19 @@ mut:
 
 pub struct CommandCmdConfig {
 	help  fn (x string, y []FlagArgs, z []FlagArgs)
-	errors ErrorConfig
-	validators CommandValidatorsConfig
+	errors CmdErrorsConfig
+	validators CmdValidatorsConfig
 }
 
-pub struct CommandValidatorsConfig {
+pub struct CmdErrorsConfig {
+	required fn (x string, y string)
+	value    fn (x string, y string)
+	blank    fn (x string)
+	unknown  fn (x string)
+	command  fn (x string)
+}
+
+pub struct CmdValidatorsConfig {
 	integer fn (x string) bool
 	string_var fn (x string) bool
 	float fn (x string) bool

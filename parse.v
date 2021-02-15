@@ -16,6 +16,7 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 			mut x := cmd
 			mut found := false
 			mut flag_value := ''
+			mut f_op := ''
 
 			long := '--$cmd.name'
 			short := '-$cmd.short_arg'
@@ -31,6 +32,8 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 						// set found
 						found = true
 
+						f_op = '='
+
 						// remove from osargs
 						args.delete(args.index(i))
 					}
@@ -44,7 +47,12 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 						flag_value = args[args.index(val)] or {
 							if x.data_type != .boolean {
 								// show blank error
-								c.blank_err(i)
+								if cfg.errors.use_custom_blank {
+									cfg.errors.blank(i)
+								} else {
+									c.blank_err(i)
+								}
+								exit(1)
 							}
 							'' // it is needed, not sure xD
 						}
@@ -64,7 +72,12 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 							args.delete(args.index(i))
 						} else {
 							// show blank error
-							c.blank_err(osargs[osargs.index(i)-1])
+							if cfg.errors.use_custom_blank {
+								cfg.errors.blank(osargs[osargs.index(i)-1])
+							} else {
+								c.blank_err(osargs[osargs.index(i)-1])
+							}
+							exit(1)
 						}
 					}
 				}
@@ -72,7 +85,7 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 				// if flag is present / parsed
 				if found {
 					// get value
-					x.value = c.parse_value(flag_value, x.data_type, i, '')
+					x.value = c.parse_value(flag_value, x.data_type, i, f_op, cfg)
 
 					// append new flag w/ value to flags
 					flags << x
@@ -85,7 +98,7 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 	}
 
 	
-	prsd_helper_flags := c.parse_helper(all_flags)
+	prsd_helper_flags := c.parse_helper(all_flags, cfg)
 
 	// append parsed flags from helper
 	flags << prsd_helper_flags
@@ -100,36 +113,85 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 
 // parse_value is a value parser and validator
 //   it checks if set value's data_type is similar to flag's
-fn (c &Commander) parse_value(val string, dtype FlagDataType, flag string, flag_op string) string {
+fn (c &Commander) parse_value(val string, dtype FlagDataType, flag string, flag_op string, cfg CommandConfig) string {
 	mut value := ''
+	mut valid := false
 
 	// validate values
 	match dtype {
 		.string_var {
-			value = val
-		}
-		.integer {
-			if int_validator(val) {
+			if cfg.validators.use_custom_string_var {
+				valid = cfg.validators.string_var(val)
+			} else {
+				valid = true
+			}
+			
+			if valid {
 				value = val
 			} else {
-				c.value_err(flag, 'int')
+				if cfg.errors.use_custom_value {
+					cfg.errors.value(flag, 'string')
+				} else {
+					c.value_err(flag, 'string')
+				}
+				exit(1)
+			}
+		}
+		.integer {
+			if cfg.validators.use_custom_integer {
+				valid = cfg.validators.integer(val)
+			} else {
+				valid = int_validator(val)
+			}
+
+			if valid {
+				value = val
+			} else {
+				if cfg.errors.use_custom_value {
+					cfg.errors.value(flag, 'int')
+				} else {
+					c.value_err(flag, 'int')
+				}
+				exit(1)
 			}
 		}
 		.float {
-			if float_validator(val) {
+			if cfg.validators.use_custom_float {
+				valid = cfg.validators.float(val)
+			} else {
+				valid = float_validator(val)
+			}
+
+			if valid {
 				value = val
 			} else {
-				c.value_err(flag, 'float')
+				if cfg.errors.use_custom_value {
+					cfg.errors.value(flag, 'float')
+				} else {
+					c.value_err(flag, 'float')
+				}
+				exit(1)
 			}
 		}
 		.boolean {
-			if bool_validator(val) {
+			if cfg.validators.use_custom_boolean {
+				valid = cfg.validators.boolean(val)
+			} else {
+				valid = bool_validator(val)
+			}
+
+			if valid {
 				value = val
 			} else {
 				if flag_op == '=' {
 					// if the value set is not equal to true or false,
 					// show value error
-					c.value_err(flag, 'bool')
+					if cfg.errors.use_custom_value {
+						cfg.errors.value(flag, 'bool')
+					} else {
+						c.value_err(flag, 'bool')
+					}
+					exit(1)
 				} else {
 					// if the value set is not equal to true or false,
 					// parse it but next arg will be parsed to args
@@ -145,14 +207,19 @@ fn (c &Commander) parse_value(val string, dtype FlagDataType, flag string, flag_
 
 // parse_helper is a helper to the main parser
 // it verifies values of flags and checks if they are required or not
-fn (c &Commander) parse_helper(flags []FlagArgs) []FlagArgs {
+fn (c &Commander) parse_helper(flags []FlagArgs, cfg CommandConfig) []FlagArgs {
 	mut fl := flags.clone()
 
 	for mut i in fl {
 		if i.value == '' {
 			// if required show error
 			if i.required == true {
-				c.required_err(i.name, i.short_arg)
+				if cfg.errors.use_custom_required {
+					cfg.errors.required(i.name, i.short_arg)
+				} else {
+					c.required_err(i.name, i.short_arg)
+				}
+				exit(1)
 			}
 
 			// otherwise, set value with default
@@ -163,7 +230,7 @@ fn (c &Commander) parse_helper(flags []FlagArgs) []FlagArgs {
 	return fl
 }
 
-
+// parse_config parses the config set if there is
 fn (c &Commander) parse_config(p_config CommandConfig) CommandConfig {
 	mut cfg := p_config
 
@@ -172,19 +239,19 @@ fn (c &Commander) parse_config(p_config CommandConfig) CommandConfig {
 	}
 
 	// custom error messages
-	if c.config.errors.required != '' {
+	if c.config.errors.use_custom_required {
 		cfg.errors.required = c.config.errors.required
 	}
-	if c.config.errors.value != '' {
+	if c.config.errors.use_custom_value {
 		cfg.errors.value = c.config.errors.value
 	}
-	if c.config.errors.blank != '' {
+	if c.config.errors.use_custom_blank {
 		cfg.errors.blank = c.config.errors.blank
 	}
-	if c.config.errors.unknown != '' {
+	if c.config.errors.use_custom_unknown {
 		cfg.errors.unknown = c.config.errors.unknown
 	}
-	if c.config.errors.required != '' {
+	if c.config.errors.use_custom_command {
 		cfg.errors.command = c.config.errors.command
 	}
 	// end custom error messages
@@ -202,7 +269,6 @@ fn (c &Commander) parse_config(p_config CommandConfig) CommandConfig {
 	if c.config.validators.use_custom_boolean {
 		cfg.validators.boolean = c.config.validators.boolean
 	}
-
 	
 	// return new config
 	return cfg

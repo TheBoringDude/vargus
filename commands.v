@@ -22,7 +22,38 @@ pub fn new(cmdConfig CmdConfig) &Commander {
 			false
 		}
 		config: CommandConfig {
-			errors: cmdConfig.config.errors
+			errors: ErrorConfig {
+				required: cmdConfig.config.errors.required
+				use_custom_required: if t.config.errors.required != cmdConfig.config.errors.required {
+					true
+				} else {
+					false
+				}
+				value: cmdConfig.config.errors.value
+				use_custom_value: if t.config.errors.value != cmdConfig.config.errors.value {
+					true
+				} else {
+					false
+				}
+				blank: cmdConfig.config.errors.blank
+				use_custom_blank: if t.config.errors.blank != cmdConfig.config.errors.blank {
+					true
+				} else {
+					false
+				}
+				unknown: cmdConfig.config.errors.unknown
+				use_custom_unknown: if t.config.errors.unknown != cmdConfig.config.errors.unknown {
+					true
+				} else {
+					false
+				}
+				command: cmdConfig.config.errors.command
+				use_custom_command: if t.config.errors.command != cmdConfig.config.errors.command {
+					true
+				} else {
+					false
+				}
+			}
 			custom_help: cmdConfig.config.help
 			use_custom_help: if t.config.help != cmdConfig.config.help {
 				true
@@ -75,7 +106,38 @@ pub fn (mut c Commander) add_command(cmdConfig CmdConfig) &Commander {
 			false
 		}
 		config: CommandConfig {
-			errors: cmdConfig.config.errors
+			errors: ErrorConfig {
+				required: cmdConfig.config.errors.required
+				use_custom_required: if t.config.errors.required != cmdConfig.config.errors.required {
+					true
+				} else {
+					false
+				}
+				value: cmdConfig.config.errors.value
+				use_custom_value: if t.config.errors.value != cmdConfig.config.errors.value {
+					true
+				} else {
+					false
+				}
+				blank: cmdConfig.config.errors.blank
+				use_custom_blank: if t.config.errors.blank != cmdConfig.config.errors.blank {
+					true
+				} else {
+					false
+				}
+				unknown: cmdConfig.config.errors.unknown
+				use_custom_unknown: if t.config.errors.unknown != cmdConfig.config.errors.unknown {
+					true
+				} else {
+					false
+				}
+				command: cmdConfig.config.errors.command
+				use_custom_command: if t.config.errors.command != cmdConfig.config.errors.command {
+					true
+				} else {
+					false
+				}
+			}
 			custom_help: cmdConfig.config.help
 			use_custom_help: if t.config.help != cmdConfig.config.help {
 				true

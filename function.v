@@ -8,7 +8,7 @@ pub fn (mut c Commander) run() {
 	if c.is_root {
 		// exclude the app from the os.args
 		// the os.args[0] is the app itself, 
-		c.runner(c.command, []FlagArgs{}, os.args[1..os.args.len], PersistentCmdHooks{}, CommandConfig{})
+		c.runner(c.command, []FlagArgs{}, os.args[1..os.args.len], PersistentCmdHooks{}, c.config)
 	} else {
 		println('\n [!misused] .run() can only be used on a root commander')
 		exit(1)
@@ -51,14 +51,19 @@ fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string, persiste
 			if !args_has_hyphen_dash(osargs[0]) && !c.allow_next_args {
 				if osargs.len > 1 {
 					if args_has_hyphen_dash(osargs[1]) {
-						c.command_err(osargs[0])
+						if cfg.errors.use_custom_command {
+							cfg.errors.command(osargs[0])
+						} else {
+							c.command_err(osargs[0])
+						}
+						exit(1)
 					}
 				}
 			}
 		}
 	}
 	// this will be called if nothing happened above
-	args, flags := c.parse_flags(osargs, gflags)
+	args, flags := c.parse_flags(osargs, gflags, cfg)
 	
 	if c.exec_func {
 		c.execute(args, flags, p_hooks)

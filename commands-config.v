@@ -9,12 +9,17 @@ mut:
 }
 
 struct ErrorConfig {
+	use_custom_required bool
+	use_custom_value bool
+	use_custom_blank bool
+	use_custom_unknown bool
+	use_custom_command bool
 mut:
-	required string
-	value    string
-	blank    string
-	unknown  string
-	command  string
+	required fn (x string, y string)
+	value    fn (x string, y string)
+	blank    fn (x string)
+	unknown  fn (x string)
+	command  fn (x string)
 }
 
 
