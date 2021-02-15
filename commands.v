@@ -1,5 +1,10 @@
 module vargus
 
+// NOTE:
+// The function below is repetitive,
+// I explicitly did not combine them since it leaks pointer 
+//  memory error (indirectly lost) in valgrind.
+
 // new creates a new commander root instance
 pub fn new(cmdConfig CmdConfig) &Commander {
 	t := CmdConfig{}
@@ -15,6 +20,72 @@ pub fn new(cmdConfig CmdConfig) &Commander {
 			true
 		} else {
 			false
+		}
+		config: CommandConfig {
+			errors: ErrorConfig {
+				required: cmdConfig.config.errors.required
+				use_custom_required: if t.config.errors.required != cmdConfig.config.errors.required {
+					true
+				} else {
+					false
+				}
+				value: cmdConfig.config.errors.value
+				use_custom_value: if t.config.errors.value != cmdConfig.config.errors.value {
+					true
+				} else {
+					false
+				}
+				blank: cmdConfig.config.errors.blank
+				use_custom_blank: if t.config.errors.blank != cmdConfig.config.errors.blank {
+					true
+				} else {
+					false
+				}
+				unknown: cmdConfig.config.errors.unknown
+				use_custom_unknown: if t.config.errors.unknown != cmdConfig.config.errors.unknown {
+					true
+				} else {
+					false
+				}
+				command: cmdConfig.config.errors.command
+				use_custom_command: if t.config.errors.command != cmdConfig.config.errors.command {
+					true
+				} else {
+					false
+				}
+			}
+			custom_help: cmdConfig.config.help
+			use_custom_help: if t.config.help != cmdConfig.config.help {
+				true
+			} else {
+				false
+			}
+			validators: ValidatorsConfig {
+				integer: cmdConfig.config.validators.integer
+				use_custom_integer: if t.config.validators.integer != cmdConfig.config.validators.integer {
+					true
+				} else {
+					false
+				}
+				string_var: cmdConfig.config.validators.string_var
+				use_custom_string_var: if t.config.validators.string_var != cmdConfig.config.validators.string_var {
+					true
+				} else {
+					false
+				}
+				float: cmdConfig.config.validators.float
+				use_custom_float: if t.config.validators.float != cmdConfig.config.validators.float {
+					true
+				} else {
+					false
+				}
+				boolean: cmdConfig.config.validators.boolean
+				use_custom_boolean: if t.config.validators.boolean != cmdConfig.config.validators.boolean {
+					true
+				} else {
+					false
+				}
+			}
 		}
 	}
 }
@@ -33,6 +104,72 @@ pub fn (mut c Commander) add_command(cmdConfig CmdConfig) &Commander {
 			true
 		} else {
 			false
+		}
+		config: CommandConfig {
+			errors: ErrorConfig {
+				required: cmdConfig.config.errors.required
+				use_custom_required: if t.config.errors.required != cmdConfig.config.errors.required {
+					true
+				} else {
+					false
+				}
+				value: cmdConfig.config.errors.value
+				use_custom_value: if t.config.errors.value != cmdConfig.config.errors.value {
+					true
+				} else {
+					false
+				}
+				blank: cmdConfig.config.errors.blank
+				use_custom_blank: if t.config.errors.blank != cmdConfig.config.errors.blank {
+					true
+				} else {
+					false
+				}
+				unknown: cmdConfig.config.errors.unknown
+				use_custom_unknown: if t.config.errors.unknown != cmdConfig.config.errors.unknown {
+					true
+				} else {
+					false
+				}
+				command: cmdConfig.config.errors.command
+				use_custom_command: if t.config.errors.command != cmdConfig.config.errors.command {
+					true
+				} else {
+					false
+				}
+			}
+			custom_help: cmdConfig.config.help
+			use_custom_help: if t.config.help != cmdConfig.config.help {
+				true
+			} else {
+				false
+			}
+			validators: ValidatorsConfig {
+				integer: cmdConfig.config.validators.integer
+				use_custom_integer: if t.config.validators.integer != cmdConfig.config.validators.integer {
+					true
+				} else {
+					false
+				}
+				string_var: cmdConfig.config.validators.string_var
+				use_custom_string_var: if t.config.validators.string_var != cmdConfig.config.validators.string_var {
+					true
+				} else {
+					false
+				}
+				float: cmdConfig.config.validators.float
+				use_custom_float: if t.config.validators.float != cmdConfig.config.validators.float {
+					true
+				} else {
+					false
+				}
+				boolean: cmdConfig.config.validators.boolean
+				use_custom_boolean: if t.config.validators.boolean != cmdConfig.config.validators.boolean {
+					true
+				} else {
+					false
+				}
+			}
 		}
 	}
 

@@ -8,7 +8,7 @@ pub fn (mut c Commander) run() {
 	if c.is_root {
 		// exclude the app from the os.args
 		// the os.args[0] is the app itself, 
-		c.runner(c.command, []FlagArgs{}, os.args[1..os.args.len], c.persistent_hooks)
+		c.runner(c.command, []FlagArgs{}, os.args[1..os.args.len], PersistentCmdHooks{}, c.config)
 	} else {
 		println('\n [!misused] .run() can only be used on a root commander')
 		exit(1)
@@ -16,7 +16,8 @@ pub fn (mut c Commander) run() {
 }
 
 // runner is the helper for the `run` function
-fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string, persistent_hooks PersistentCmdHooks) {
+//	scmd => string command
+fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string, persistent_hooks PersistentCmdHooks, p_config CommandConfig) {
 	mut gflags := gfls.clone()
 
 	// append global flags
@@ -25,33 +26,53 @@ fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string, persiste
 	// persistent hooks
 	p_hooks := c.get_persistent_hooks(persistent_hooks)
 
+	// parse configurations
+	cfg := c.parse_config(p_config)
+
 	if osargs.len > 0 {
 		// help message ([--help, -h, help] flag)
 		if osargs[0] in help {
-			c.help(scmd, gflags)
+			if cfg.use_custom_help {
+				cfg.custom_help(scmd, c.flags, gflags)
+			} else {
+				c.help(scmd, c.flags, gflags)
+			}
 			exit(0)
 		}
 
 		if osargs[0] in c.sub_commands_string {
 			for i in c.sub_commands {
 				if i.command == osargs[0] {
-					i.runner(scmd + ' $i.command', gflags, osargs[1..osargs.len], p_hooks)
+					i.runner(scmd + ' $i.command', gflags, osargs[1..osargs.len], p_hooks, cfg)
 					break
 				}
 			}
 		} else {
 			if !args_has_hyphen_dash(osargs[0]) && !c.allow_next_args {
-				command_err(osargs[0])
+				if osargs.len > 1 {
+					if args_has_hyphen_dash(osargs[1]) {
+						if cfg.errors.use_custom_command {
+							cfg.errors.command(osargs[0])
+						} else {
+							c.command_err(osargs[0])
+						}
+						exit(1)
+					}
+				}
 			}
 		}
 	}
 	// this will be called if nothing happened above
-	args, flags := parse_flags(c, osargs, gflags)
+	args, flags := c.parse_flags(osargs, gflags, cfg)
 	
 	if c.exec_func {
-		c.execute(c.function, args, flags, p_hooks)
+		c.execute(args, flags, p_hooks)
 	} else {
-		c.help(scmd, gflags)
+		if cfg.use_custom_help {
+			cfg.custom_help(scmd, c.flags, gflags)
+		} else {
+			c.help(scmd, c.flags, gflags)
+		}
 	}
 
 	// exit app
@@ -60,7 +81,7 @@ fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string, persiste
 
 // execute is the command function runner
 // it executes the function associated to the command
-fn (c &Commander) execute(f fn (x []string, y []FlagArgs), args []string, flags []FlagArgs, p_hooks PersistentCmdHooks) {
+fn (c &Commander) execute(args []string, flags []FlagArgs, p_hooks PersistentCmdHooks) {
 	// run pre-* hooks
 	if p_hooks.use_persistent_pre_run {
 		p_hooks.persistent_pre_run(args, flags)
@@ -70,7 +91,7 @@ fn (c &Commander) execute(f fn (x []string, y []FlagArgs), args []string, flags 
 	}
 
 	// execute main function
-	f(args, flags)
+	c.function(args, flags)
 
 	// run post-* hooks
 	if c.hooks.use_post_run {
