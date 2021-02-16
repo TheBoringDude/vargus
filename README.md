@@ -185,7 +185,7 @@ Others prefer directly configuring a command in the struct.
       short_desc string
       long_desc  string
       allow_next_args bool	= true // defaults to true
-      function   fn (x []string, y []FlagArgs)
+      function   fn (args []string, flags []FlagArgs)
       hooks CmdHooksConfig
       config CommandCmdConfig
   }
@@ -193,24 +193,24 @@ Others prefer directly configuring a command in the struct.
 
   ```v
   pub struct CommandCmdConfig {
-      help  fn (x string, y []FlagArgs, z []FlagArgs)
-      errors CmdErrorsConfig
-      validators CmdValidatorsConfig
+      help        fn (args string, local_flags []FlagArgs, global_flags []FlagArgs)
+      errors      CmdErrorsConfig
+      validators  CmdValidatorsConfig
   }
 
   pub struct CmdErrorsConfig {
-      required fn (x string, y string)
-      value    fn (x string, y string)
-      blank    fn (x string)
-      unknown  fn (x string)
-      command  fn (x string)
+      required fn (flag_name string, flag_shortarg string)
+      value    fn (flag string, flag_type string)
+      blank    fn (flag string)
+      unknown  fn (flag string)
+      command  fn (command string)
   }
 
   pub struct CmdValidatorsConfig {
-      integer fn (x string) bool
-      string_var fn (x string) bool
-      float fn (x string) bool
-      boolean fn (x string) bool
+      integer     fn (flag_value string) bool
+      string_var  fn (flag_value string) bool
+      float       fn (flag_value string) bool
+      boolean     fn (flag_value string) bool
   }
   ```
 
@@ -220,5 +220,9 @@ Others prefer directly configuring a command in the struct.
 
 - #### Unknown commands
   - For `vargus` to be able to know that a command is unknown, you should set the allow_next_args in the command's `CmdConfig` to false. This will set the next argument to a command `unknown` if the preceeding argument is a flag. Otherwise, it will be parsed as an argument.
+
+## Inspirations:
+
+- [**Cobra**](https://cobra.dev) CLI Commander for Go
 
 ### &copy; TheBoringDude
