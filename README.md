@@ -133,8 +133,92 @@ Vargus supports adding hooks to your command.
   }
   ```
 
+### Custom Configurations
+
+**WARNING**: These configurations are persistent that once defined on a command, will take effect on each sub_commands. It is preferred to be set on a root / main command.
+
+- #### Command Help
+  ````v
+  [command].set_help(fn (command string, local_flags []vargus.FlagArgs, global_flags []vargus.FlagArgs))```
+  ````
+- #### Flag Validators
+  ```v
+  [command].set_validator(cf CFlagValidatorConfig)
+  ```
+  ```v
+  pub struct CFlagValidatorConfig {
+      flag_type FlagDataType [required]
+      function fn (x string) bool [required]
+  }
+  ```
+- #### Custom Errors
+  - **Required** : flags that are required / a value should be set
+    ```v
+    [command].set_custom_err_required(f fn (x string, y string))
+    ```
+  - **Value** : the value set to the flag is invalid or of different data type
+    ```v
+    [command].set_custom_err_value(f fn (x string, y string))
+    ```
+  - **Blank** : the flag is present but no value can be found
+    ```v
+    [command].set_custom_err_blank(f fn (x string))
+    ```
+  - **Unknown** : flag is unknown or is not set to the command
+    ```v
+    [command].set_custom_err_unknown(f fn (x string))
+    ```
+  - **Command** : the command is unknown
+    ```v
+    [command].set_custom_err_command(f fn (x string))
+    ```
+
+### Settings configurations directly from struct
+
+Others prefer directly configuring a command in the struct.
+
+- **CmdConfig** : this is the main config in adding new commands
+
+  ```v
+  pub struct CmdConfig {
+      command    string
+      short_desc string
+      long_desc  string
+      allow_next_args bool	= true // defaults to true
+      function   fn (x []string, y []FlagArgs)
+      hooks CmdHooksConfig
+      config CommandCmdConfig
+  }
+  ```
+
+  ```v
+  pub struct CommandCmdConfig {
+      help  fn (x string, y []FlagArgs, z []FlagArgs)
+      errors CmdErrorsConfig
+      validators CmdValidatorsConfig
+  }
+
+  pub struct CmdErrorsConfig {
+      required fn (x string, y string)
+      value    fn (x string, y string)
+      blank    fn (x string)
+      unknown  fn (x string)
+      command  fn (x string)
+  }
+
+  pub struct CmdValidatorsConfig {
+      integer fn (x string) bool
+      string_var fn (x string) bool
+      float fn (x string) bool
+      boolean fn (x string) bool
+  }
+  ```
+
 ## How does it work?
 
 `vargus` utilizes only the `os` module, primarily the `os.args`
+
+- #### Unknown commands
+  - For `vargus` to be able to know that a command is unknown, you should set the allow_next_args in the command's `CmdConfig` to false. This will set the next argument to a command `unknown` if the preceeding argument is a flag. Otherwise, it will be parsed as an argument.
 
 ### &copy; TheBoringDude
