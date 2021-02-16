@@ -21,6 +21,7 @@ mut:
 }
 
 // STRUCTS FOR APP CLI CONFIGURATIONS
+//   NOTE: THIS MIGHT BE REMOVED OR CHANGED IN THE FUTURE
 pub struct CmdHooksConfig {
 	pre_run fn (x []string, y []FlagArgs)
 	post_run fn (x []string, y []FlagArgs)
