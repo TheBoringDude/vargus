@@ -20,6 +20,15 @@ mut:
 	persistent_hooks PersistentCmdHooks
 }
 
+// STRUCTS FOR APP CLI CONFIGURATIONS
+//   NOTE: THIS MIGHT BE REMOVED OR CHANGED IN THE FUTURE
+pub struct CmdHooksConfig {
+	pre_run fn (x []string, y []FlagArgs)
+	post_run fn (x []string, y []FlagArgs)
+	persistent_pre_run fn (x []string, y []FlagArgs)
+	persistent_post_run fn (x []string, y []FlagArgs)
+}
+
 pub struct CommandCmdConfig {
 	help  fn (x string, y []FlagArgs, z []FlagArgs)
 	errors CmdErrorsConfig
@@ -47,5 +56,7 @@ pub struct CmdConfig {
 	long_desc  string
 	allow_next_args bool	= true // defaults to true
 	function   fn (x []string, y []FlagArgs)
+	hooks CmdHooksConfig
 	config CommandCmdConfig
 }
+// END STRUCTS FOR APP CLI CONFIGURATIONS
