@@ -20,13 +20,13 @@ fn main() {
 	mut cmder := vargus.new(root)
 
 	cmder.add_hooks(
-		hooks_type: .persistent_pre_run,
+		hooks_type: .persistent_pre_run
 		function: fn (args []string, flags []vargus.FlagArgs) {
 			println('persistent pre-run : $args')
 		}
 	)
 	cmder.add_hooks(
-		hooks_type: .pre_run,
+		hooks_type: .pre_run
 		function: fn (args []string, flags []vargus.FlagArgs) {
 			println('pre-run : $args')
 		}
@@ -44,7 +44,7 @@ fn main() {
 	)
 
 	generate.add_hooks(
-		hooks_type: .persistent_pre_run,
+		hooks_type: .persistent_pre_run
 		function: fn (args []string, flags []vargus.FlagArgs) {
 			println('generate - persistent pre-run : $args')
 		}

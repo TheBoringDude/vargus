@@ -8,7 +8,8 @@ pub fn (mut c Commander) run() {
 	if c.is_root {
 		// exclude the app from the os.args
 		// the os.args[0] is the app itself, 
-		c.runner(c.command, []FlagArgs{}, os.args[1..os.args.len], PersistentCmdHooks{}, c.config)
+		c.runner(c.command, []FlagArgs{}, os.args[1..os.args.len], PersistentCmdHooks{},
+			c.config)
 	} else {
 		println('\n [!misused] .run() can only be used on a root commander')
 		exit(1)
@@ -43,7 +44,8 @@ fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string, persiste
 		if osargs[0] in c.sub_commands_string {
 			for i in c.sub_commands {
 				if i.command == osargs[0] {
-					i.runner(scmd + ' $i.command', gflags, osargs[1..osargs.len], p_hooks, cfg)
+					i.runner(scmd + ' $i.command', gflags, osargs[1..osargs.len], p_hooks,
+						cfg)
 					break
 				}
 			}
@@ -64,7 +66,7 @@ fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string, persiste
 	}
 	// this will be called if nothing happened above
 	args, flags := c.parse_flags(osargs, gflags, cfg)
-	
+
 	if c.exec_func {
 		c.execute(args, flags, p_hooks)
 	} else {
@@ -89,7 +91,6 @@ fn (c &Commander) execute(args []string, flags []FlagArgs, p_hooks PersistentCmd
 	if c.hooks.use_pre_run {
 		c.hooks.pre_run(args, flags)
 	}
-
 	// execute main function
 	c.function(args, flags)
 

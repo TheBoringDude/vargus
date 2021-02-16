@@ -44,7 +44,6 @@ fn float_validator(x string) bool {
 	return valid_number(x.replace('.', '').replace('e', ''))
 }
 
-
 // bool_validator is a smple validator for bool strings
 fn bool_validator(x string) bool {
 	if x == 'false' || x == 'true' {

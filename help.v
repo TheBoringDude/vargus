@@ -6,7 +6,7 @@ const (
 
 // get_space calculates space for better spacing in print outputs
 pub fn get_space(cmdlen int) string {
-	return ' '.repeat(40-cmdlen)
+	return ' '.repeat(40 - cmdlen)
 }
 
 // help prints the help info once triggered

@@ -9,33 +9,21 @@ module vargus
 pub fn new(cmdConfig CmdConfig) &Commander {
 	t := CmdConfig{}
 
-	return &Commander {
+	return &Commander{
 		command: cmdConfig.command
 		short_desc: cmdConfig.short_desc
 		long_desc: cmdConfig.long_desc
 		allow_next_args: cmdConfig.allow_next_args
 		is_root: true
 		function: cmdConfig.function
-		exec_func: if t.function != cmdConfig.function {
-			true
-		} else {
-			false
-		}
-		hooks: CmdHooks {
+		exec_func: if t.function != cmdConfig.function { true } else { false }
+		hooks: CmdHooks{
 			pre_run: cmdConfig.hooks.pre_run
-			use_pre_run: if t.hooks.pre_run != cmdConfig.hooks.pre_run {
-				true
-			} else {
-				false
-			}
+			use_pre_run: if t.hooks.pre_run != cmdConfig.hooks.pre_run { true } else { false }
 			post_run: cmdConfig.hooks.post_run
-			use_post_run: if t.hooks.post_run != cmdConfig.hooks.post_run {
-				true
-			} else {
-				false
-			}
+			use_post_run: if t.hooks.post_run != cmdConfig.hooks.post_run { true } else { false }
 		}
-		persistent_hooks: PersistentCmdHooks {
+		persistent_hooks: PersistentCmdHooks{
 			persistent_pre_run: cmdConfig.hooks.persistent_pre_run
 			use_persistent_pre_run: if t.hooks.persistent_pre_run != cmdConfig.hooks.persistent_pre_run {
 				true
@@ -49,8 +37,8 @@ pub fn new(cmdConfig CmdConfig) &Commander {
 				false
 			}
 		}
-		config: CommandConfig {
-			errors: ErrorConfig {
+		config: CommandConfig{
+			errors: ErrorConfig{
 				required: cmdConfig.config.errors.required
 				use_custom_required: if t.config.errors.required != cmdConfig.config.errors.required {
 					true
@@ -83,12 +71,8 @@ pub fn new(cmdConfig CmdConfig) &Commander {
 				}
 			}
 			custom_help: cmdConfig.config.help
-			use_custom_help: if t.config.help != cmdConfig.config.help {
-				true
-			} else {
-				false
-			}
-			validators: ValidatorsConfig {
+			use_custom_help: if t.config.help != cmdConfig.config.help { true } else { false }
+			validators: ValidatorsConfig{
 				integer: cmdConfig.config.validators.integer
 				use_custom_integer: if t.config.validators.integer != cmdConfig.config.validators.integer {
 					true
@@ -122,32 +106,20 @@ pub fn new(cmdConfig CmdConfig) &Commander {
 pub fn (mut c Commander) add_command(cmdConfig CmdConfig) &Commander {
 	t := CmdConfig{}
 
-	mut cmd := &Commander {
+	mut cmd := &Commander{
 		command: cmdConfig.command
 		short_desc: cmdConfig.short_desc
 		long_desc: cmdConfig.long_desc
 		allow_next_args: cmdConfig.allow_next_args
 		function: cmdConfig.function
-		exec_func: if t.function != cmdConfig.function {
-			true
-		} else {
-			false
-		}
-		hooks: CmdHooks {
+		exec_func: if t.function != cmdConfig.function { true } else { false }
+		hooks: CmdHooks{
 			pre_run: cmdConfig.hooks.pre_run
-			use_pre_run: if t.hooks.pre_run != cmdConfig.hooks.pre_run {
-				true
-			} else {
-				false
-			}
+			use_pre_run: if t.hooks.pre_run != cmdConfig.hooks.pre_run { true } else { false }
 			post_run: cmdConfig.hooks.post_run
-			use_post_run: if t.hooks.post_run != cmdConfig.hooks.post_run {
-				true
-			} else {
-				false
-			}
+			use_post_run: if t.hooks.post_run != cmdConfig.hooks.post_run { true } else { false }
 		}
-		persistent_hooks: PersistentCmdHooks {
+		persistent_hooks: PersistentCmdHooks{
 			persistent_pre_run: cmdConfig.hooks.persistent_pre_run
 			use_persistent_pre_run: if t.hooks.persistent_pre_run != cmdConfig.hooks.persistent_pre_run {
 				true
@@ -161,8 +133,8 @@ pub fn (mut c Commander) add_command(cmdConfig CmdConfig) &Commander {
 				false
 			}
 		}
-		config: CommandConfig {
-			errors: ErrorConfig {
+		config: CommandConfig{
+			errors: ErrorConfig{
 				required: cmdConfig.config.errors.required
 				use_custom_required: if t.config.errors.required != cmdConfig.config.errors.required {
 					true
@@ -195,12 +167,8 @@ pub fn (mut c Commander) add_command(cmdConfig CmdConfig) &Commander {
 				}
 			}
 			custom_help: cmdConfig.config.help
-			use_custom_help: if t.config.help != cmdConfig.config.help {
-				true
-			} else {
-				false
-			}
-			validators: ValidatorsConfig {
+			use_custom_help: if t.config.help != cmdConfig.config.help { true } else { false }
+			validators: ValidatorsConfig{
 				integer: cmdConfig.config.validators.integer
 				use_custom_integer: if t.config.validators.integer != cmdConfig.config.validators.integer {
 					true

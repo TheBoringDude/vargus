@@ -42,36 +42,34 @@ fn (c &Commander) command_err(command string) {
 	println('\n [!err] unknown command: $command')
 }
 
-
 // SET CUSTOM ERROR FUNCTIONS
 
-
 // set_custom_err_required sets a custom error function for required
-pub fn (mut c Commander) set_custom_err_required(f fn (x string, y string)) {
+pub fn (mut c Commander) set_custom_err_required(f fn (string, string)) {
 	c.config.errors.required = f
 	c.config.errors.use_custom_required = true
 }
 
 // set_custom_err_value sets a custom error function for value
-pub fn (mut c Commander) set_custom_err_value(f fn (x string, y string)) {
+pub fn (mut c Commander) set_custom_err_value(f fn (string, string)) {
 	c.config.errors.value = f
 	c.config.errors.use_custom_value = true
 }
 
 // set_custom_err_blank sets a custom error function for blank
-pub fn (mut c Commander) set_custom_err_blank(f fn (x string)) {
+pub fn (mut c Commander) set_custom_err_blank(f fn (string)) {
 	c.config.errors.blank = f
 	c.config.errors.use_custom_blank = true
 }
 
 // set_custom_err_unknown sets a custom error function for unknown
-pub fn (mut c Commander) set_custom_err_unknown(f fn (x string)) {
+pub fn (mut c Commander) set_custom_err_unknown(f fn (string)) {
 	c.config.errors.unknown = f
 	c.config.errors.use_custom_unknown = true
 }
 
 // set_custom_err_command sets a custom error function for command
-pub fn (mut c Commander) set_custom_err_command(f fn (x string)) {
+pub fn (mut c Commander) set_custom_err_command(f fn (string)) {
 	c.config.errors.command = f
 	c.config.errors.use_custom_command = true
 }
