@@ -62,6 +62,11 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 
 						// remove from osargs
 						if val != '' {
+							// remove boolean flag value if true / false is set
+							if x.data_type == .boolean && (val == 'true' || val == 'false') {
+								args.delete(args.index(val))
+							}
+
 							// only delete from args if flag data_type is not boolean
 							if x.data_type != .boolean {
 								args.delete(args.index(val))
