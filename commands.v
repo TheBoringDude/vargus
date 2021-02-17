@@ -7,6 +7,9 @@ module vargus
 
 // new creates a new commander root instance
 pub fn new(cmdConfig CmdConfig) &Commander {
+	// check cmdconfig command
+	command_checker(cmdConfig)
+
 	t := CmdConfig{}
 
 	return &Commander{
@@ -104,6 +107,9 @@ pub fn new(cmdConfig CmdConfig) &Commander {
 
 // add_command adds a command to the main vargus commander instance
 pub fn (mut c Commander) add_command(cmdConfig CmdConfig) &Commander {
+	// check cmdconfig command
+	command_checker(cmdConfig)
+
 	t := CmdConfig{}
 
 	mut cmd := &Commander{

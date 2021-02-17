@@ -2,6 +2,9 @@ module vargus
 
 // add_global_flag_int handles adding of global flags to the command with integer value
 pub fn (mut c Commander) add_global_flag_int(fc IntFlagConfig) {
+	// flag checker
+	flag_checker(fc.name, fc.short_arg)
+
 	// initialize new flag instance
 	flag := FlagArgs{
 		name: fc.name
@@ -21,6 +24,9 @@ pub fn (mut c Commander) add_global_flag_int(fc IntFlagConfig) {
 
 // add_global_flag_string handles adding of global flags to the command with string value
 pub fn (mut c Commander) add_global_flag_string(fc StringFlagConfig) {
+	// flag checker
+	flag_checker(fc.name, fc.short_arg)
+
 	// initialize new flag instance
 	flag := FlagArgs{
 		name: fc.name
@@ -40,6 +46,9 @@ pub fn (mut c Commander) add_global_flag_string(fc StringFlagConfig) {
 
 // add_global_flag_float handles adding of global flags to the command with float value
 pub fn (mut c Commander) add_global_flag_float(fc FloatFlagConfig) {
+	// flag checker
+	flag_checker(fc.name, fc.short_arg)
+
 	// initialize new flag instance
 	flag := FlagArgs{
 		name: fc.name
@@ -59,6 +68,9 @@ pub fn (mut c Commander) add_global_flag_float(fc FloatFlagConfig) {
 
 // add_global_flag_bool handles adding of global flags to the command with boolean value
 pub fn (mut c Commander) add_global_flag_bool(fc BoolFlagConfig) {
+	// flag checker
+	flag_checker(fc.name, fc.short_arg)
+
 	// initialize new flag instance
 	flag := FlagArgs{
 		name: fc.name

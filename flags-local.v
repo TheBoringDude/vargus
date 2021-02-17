@@ -2,6 +2,9 @@ module vargus
 
 // add_local_flag_int handles adding of local flags to the command with integer value
 pub fn (mut c Commander) add_local_flag_int(fc IntFlagConfig) {
+	// checker
+	flag_checker(fc.name, fc.short_arg)
+
 	// append to list of flags
 	c.flags << FlagArgs{
 		name: fc.name
@@ -16,6 +19,9 @@ pub fn (mut c Commander) add_local_flag_int(fc IntFlagConfig) {
 
 // add_local_flag_string handles adding of local flags to the command with string value
 pub fn (mut c Commander) add_local_flag_string(fc StringFlagConfig) {
+	// checker
+	flag_checker(fc.name, fc.short_arg)
+
 	// append to list of flags
 	c.flags << FlagArgs{
 		name: fc.name
@@ -30,6 +36,9 @@ pub fn (mut c Commander) add_local_flag_string(fc StringFlagConfig) {
 
 // add_local_flag_float handles adding of local flags to the command with float value
 pub fn (mut c Commander) add_local_flag_float(fc FloatFlagConfig) {
+	// checker
+	flag_checker(fc.name, fc.short_arg)
+
 	// append to list of flags
 	c.flags << FlagArgs{
 		name: fc.name
@@ -44,6 +53,9 @@ pub fn (mut c Commander) add_local_flag_float(fc FloatFlagConfig) {
 
 // add_local_flag_bool handles adding of local flags to the command with boolean value
 pub fn (mut c Commander) add_local_flag_bool(fc BoolFlagConfig) {
+	// checker
+	flag_checker(fc.name, fc.short_arg)
+
 	// append to list of flags
 	c.flags << FlagArgs{
 		name: fc.name
