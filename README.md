@@ -11,6 +11,7 @@ root := vargus.CmdConfig{
     command: 'root'
     short_desc: 'short desc'
     long_desc: 'some long description'
+    allow_next_args: true
     function: fn (args []string, flags []vargus.FlagArgs) {
         println('hi')
     }
@@ -18,6 +19,8 @@ root := vargus.CmdConfig{
 
 mut cmder := vargus.new(root)
 ```
+
+- `allow_next_args` : arguments will be allowed next to a command if it isn't in the command's sub_commands. If set to `false` it will consider arguments next to the command unknown but will be considered as `args` if there are no flags defined.
 
 All commands created with `vargus.new()` are automatically defined as main root command.
 
@@ -214,12 +217,23 @@ Others prefer directly configuring a command in the struct.
   }
   ```
 
+## TODO:
+
+- Minimize / control memory leaks. (`vargus` leaks too much memory on `valgrind`) [need help]
+- Add more features...
+- Simplify codes for minimal CLI app output.
+
 ## How does it work?
 
 `vargus` utilizes only the `os` module, primarily the `os.args`
 
-- #### Unknown commands
-  - For `vargus` to be able to know that a command is unknown, you should set the allow_next_args in the command's `CmdConfig` to false. This will set the next argument to a command `unknown` if the preceeding argument is a flag. Otherwise, it will be parsed as an argument.
+- Each argument (string) from the `os.args` is manually parsed. How?
+  Sample `os.args` = `['home/app', 'generate', '--flag', 'flagvalue', 'args']`
+  - `home-app` is the main executable
+  - If `generate` has been defined as a command, it will call the `command`'s function, otherwise it will be parsed as an `argument` and it will call the parent function.
+
+* #### Unknown commands
+  - For `vargus` to be able to know that a command is unknown, you should set the `allow_next_args` in the command's `CmdConfig` to false. This will set the next argument to a command `unknown` if the preceeding argument is a flag. Otherwise, it will be parsed as an argument.
 
 ## Inspirations:
 
