@@ -24,6 +24,57 @@ mut:
 	value         string
 }
 
+// create_flag creates a flagargs from defined flagtype
+fn (mut c Commander) create_flag(fc FlagsTypeConfig, fl_type FlagType) {
+	// initialize new flag instance
+	mut flag := FlagArgs{}
+	
+	match fc {
+		IntFlagConfig {
+			flag.name = fc.name
+			flag.short_arg = fc.short_arg
+			flag.required = fc.required
+			flag.default_value = fc.default_value.str()
+			flag.data_type = .integer
+			flag.help = fc.help
+		}
+		StringFlagConfig {
+			flag.name = fc.name
+			flag.short_arg = fc.short_arg
+			flag.required = fc.required
+			flag.default_value = fc.default_value
+			flag.data_type = .string_var
+			flag.help = fc.help
+		}
+		FloatFlagConfig {
+			flag.name = fc.name
+			flag.short_arg = fc.short_arg
+			flag.required = fc.required
+			flag.default_value = fc.default_value.str()
+			flag.data_type = .float
+			flag.help = fc.help
+		}
+		BoolFlagConfig {
+			flag.name = fc.name
+			flag.short_arg = fc.short_arg
+			flag.required = fc.required
+			flag.default_value = fc.default_value.str()
+			flag.data_type = .boolean
+			flag.help = fc.help
+		}
+	}
+
+	// flag checker
+	flag_checker(flag.name, flag.short_arg)
+
+	flag.flag_type = fl_type
+
+	if fl_type == .global {
+		// append to list of flags
+		c.global_flags.insert(c.global_flags.len, flag)
+	}
+}
+
 // getter gets the string value of the flag
 fn getter(flags []FlagArgs, name string, dtype FlagDataType) string {
 	mut temp_value := ''

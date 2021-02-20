@@ -35,3 +35,6 @@ pub struct BoolFlagConfig {
 	default_value bool
 	help          string
 }
+
+
+type FlagsTypeConfig = IntFlagConfig | StringFlagConfig | FloatFlagConfig | BoolFlagConfig
