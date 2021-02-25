@@ -142,7 +142,7 @@ Vargus supports adding hooks to your command.
 
 - #### Command Help
   ````v
-  [command].set_help(fn (command string, local_flags []vargus.FlagArgs, global_flags []vargus.FlagArgs))```
+  [command].set_help(fn (command string, desc string, sub_commands []vargus.HelpSubcommands, local_flags []vargus.FlagArgs, global_flags []vargus.FlagArgs))```
   ````
 - #### Flag Validators
   ```v
@@ -196,7 +196,7 @@ Others prefer directly configuring a command in the struct.
 
   ```v
   pub struct CommandCmdConfig {
-      help        fn (args string, local_flags []FlagArgs, global_flags []FlagArgs)
+      help        fn (command string, desc string, sub_commands []HelpSubcommands, local_flags []FlagArgs, global_flags []FlagArgs)
       errors      CmdErrorsConfig
       validators  CmdValidatorsConfig
   }

@@ -1,7 +1,7 @@
 module vargus
 
 // HelpSubcommands is the parsed sub_commands
-struct HelpSubcommands {
+pub struct HelpSubcommands {
 	command    string
 	long_desc  string
 	short_desc string
