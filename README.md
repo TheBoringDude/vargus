@@ -138,12 +138,14 @@ Vargus supports adding hooks to your command.
 
 ### Custom Configurations
 
+You are on your own once you set these configurations.
+
 **WARNING**: These configurations are persistent that once defined on a command, will take effect on each sub_commands. It is preferred to be set on a root / main command.
 
 - #### Command Help
-  ````v
-  [command].set_help(fn (command string, desc string, sub_commands []vargus.HelpSubcommands, local_flags []vargus.FlagArgs, global_flags []vargus.FlagArgs))```
-  ````
+  ```v
+  [command].set_help(fn (command string, desc string, sub_commands []vargus.HelpSubcommands, local_flags []vargus.FlagArgs, global_flags []vargus.FlagArgs))
+  ```
 - #### Flag Validators
   ```v
   [command].set_validator(cf CFlagValidatorConfig)
