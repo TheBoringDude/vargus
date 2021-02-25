@@ -17,5 +17,5 @@ fn test_parse_flags() {
 
 	_, test_flag := c.parse_flags(['-v', 'true'], []FlagArgs{}, CommandConfig{})
 
-	assert test_flag[0].value == 'true' 
+	assert test_flag[0].value == 'true'
 }

@@ -36,5 +36,4 @@ pub struct BoolFlagConfig {
 	help          string
 }
 
-
-type FlagsTypeConfig = IntFlagConfig | StringFlagConfig | FloatFlagConfig | BoolFlagConfig
+type FlagsTypeConfig = BoolFlagConfig | FloatFlagConfig | IntFlagConfig | StringFlagConfig

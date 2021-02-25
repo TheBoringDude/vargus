@@ -28,7 +28,7 @@ mut:
 fn (mut c Commander) create_flag(fc FlagsTypeConfig, fl_type FlagType) {
 	// initialize new flag instance
 	mut flag := FlagArgs{}
-	
+
 	match fc {
 		IntFlagConfig {
 			flag.name = fc.name
@@ -69,9 +69,14 @@ fn (mut c Commander) create_flag(fc FlagsTypeConfig, fl_type FlagType) {
 
 	flag.flag_type = fl_type
 
-	if fl_type == .global {
-		// append to list of flags
-		c.global_flags.insert(c.global_flags.len, flag)
+	// append to list of flags
+	match fl_type {
+		.global {
+			c.global_flags.insert(c.global_flags.len, flag)
+		}
+		.local {
+			c.flags.insert(c.flags.len, flag)
+		}
 	}
 }
 

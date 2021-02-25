@@ -1,5 +1,4 @@
 // JUST AN EXAMPLE ON USING COMMAND HOOKS
-
 import theboringdude.vargus
 
 fn main() {
@@ -17,7 +16,6 @@ fn main() {
 			println('persistent pre-run : $args')
 		}
 	)
-
 
 	// run app 
 	command.run()

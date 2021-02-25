@@ -29,24 +29,24 @@ pub struct CmdHooksConfig {
 }
 
 pub struct CommandCmdConfig {
-	help       fn (string, []FlagArgs, []FlagArgs)
+	help       fn (string, string, []HelpSubcommands, []FlagArgs, []FlagArgs)
 	errors     CmdErrorsConfig
 	validators CmdValidatorsConfig
 }
 
 pub struct CmdErrorsConfig {
-	required fn (x string, y string)
-	value    fn (x string, y string)
-	blank    fn (x string)
-	unknown  fn (x string)
-	command  fn (x string)
+	required fn (string, string)
+	value    fn (string, string)
+	blank    fn (string)
+	unknown  fn (string)
+	command  fn (string)
 }
 
 pub struct CmdValidatorsConfig {
-	integer    fn (x string) bool
-	string_var fn (x string) bool
-	float      fn (x string) bool
-	boolean    fn (x string) bool
+	integer    fn (string) bool
+	string_var fn (string) bool
+	float      fn (string) bool
+	boolean    fn (string) bool
 }
 
 pub struct CmdConfig {

@@ -4,7 +4,7 @@ module vargus
 struct CommandConfig {
 mut:
 	use_custom_help bool
-	custom_help     fn (x string, y []FlagArgs, x []FlagArgs)
+	custom_help     fn (string, string, []HelpSubcommands, []FlagArgs, []FlagArgs)
 	errors          ErrorConfig
 	validators      ValidatorsConfig
 }
@@ -17,11 +17,11 @@ mut:
 	use_custom_blank    bool
 	use_custom_unknown  bool
 	use_custom_command  bool
-	required            fn (x string, y string)
-	value               fn (x string, y string)
-	blank               fn (x string)
-	unknown             fn (x string)
-	command             fn (x string)
+	required            fn (string, string)
+	value               fn (string, string)
+	blank               fn (string)
+	unknown             fn (string)
+	command             fn (string)
 }
 
 // ValidatorsConfig is the custom configurations for flag validators
@@ -31,21 +31,21 @@ mut:
 	use_custom_string_var bool
 	use_custom_float      bool
 	use_custom_boolean    bool
-	integer               fn (x string) bool
-	string_var            fn (x string) bool
-	float                 fn (x string) bool
-	boolean               fn (x string) bool
+	integer               fn (string) bool
+	string_var            fn (string) bool
+	float                 fn (string) bool
+	boolean               fn (string) bool
 }
 
 // set_help sets a custom help function for the app
-pub fn (mut c Commander) set_help(f fn (string, []FlagArgs, []FlagArgs)) {
+pub fn (mut c Commander) set_help(f fn (string, string, []HelpSubcommands, []FlagArgs, []FlagArgs)) {
 	c.config.custom_help = f
 	c.config.use_custom_help = true
 }
- 
+
 pub struct CFlagValidatorConfig {
-	flag_type FlagDataType    	 [required]
-	function  fn (x string) bool [required]
+	flag_type FlagDataType     [required]
+	function  fn (string) bool [required]
 }
 
 // set_validator sets a custom validators for a specific flag type

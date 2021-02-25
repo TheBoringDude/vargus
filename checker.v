@@ -15,7 +15,6 @@ fn command_checker(cmdConfig CmdConfig) {
 	}
 }
 
-
 // flag_checker is a utlity flag checker which checks if important fiels are set
 fn flag_checker(flag_name string, flag_short_arg string) {
 	if is_blank(flag_name) && is_blank(flag_short_arg) {
@@ -24,13 +23,12 @@ fn flag_checker(flag_name string, flag_short_arg string) {
 	}
 }
 
-
 // check_if_blank checks if a string is just a blank
 fn is_blank(text string) bool {
 	// remove space and check
 	if text.trim_space() == '' {
 		return true
 	}
-	
+
 	return false
 }

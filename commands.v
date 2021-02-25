@@ -24,7 +24,6 @@ pub fn (mut c Commander) add_command(cmdConfig CmdConfig) &Commander {
 	return c.sub_commands[c.sub_commands.index(cmd)]
 }
 
-
 fn create_command(cmdConfig CmdConfig, root bool) &Commander {
 	// check cmdconfig command
 	command_checker(cmdConfig)

@@ -30,13 +30,33 @@ fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string, persiste
 	// parse configurations
 	cfg := c.parse_config(p_config)
 
+	// CMD HELP VARIABLES
+	mut cmd_help := scmd
+	mut cmd_desc := c.long_desc
+	mut cmd_flags := c.flags.clone()
+	mut cmd_gflags := gflags.clone()
+	mut cmd_subcommands := parse_subcommands(c.sub_commands) // get, parse sub_commands
+
 	if osargs.len > 0 {
 		// help message ([--help, -h, help] flag)
 		if osargs[0] in help {
+			if osargs.len > 1 {
+				for i in c.sub_commands {
+					if osargs[1] == i.command {
+						cmd_help += ' $i.command'
+						cmd_desc = i.long_desc
+						cmd_flags = i.flags.clone()
+						cmd_gflags << i.global_flags
+						cmd_subcommands = parse_subcommands(i.sub_commands)
+						break
+					}
+				}
+			}
+
 			if cfg.use_custom_help {
-				cfg.custom_help(scmd, c.flags, gflags)
+				cfg.custom_help(cmd_help, cmd_desc, cmd_subcommands, cmd_flags, cmd_gflags)
 			} else {
-				c.help(scmd, c.flags, gflags)
+				c.help(cmd_help, cmd_desc, cmd_subcommands, cmd_flags, cmd_gflags)
 			}
 			exit(0)
 		}
@@ -71,9 +91,9 @@ fn (c &Commander) runner(scmd string, gfls []FlagArgs, osargs []string, persiste
 		c.execute(args, flags, p_hooks)
 	} else {
 		if cfg.use_custom_help {
-			cfg.custom_help(scmd, c.flags, gflags)
+			cfg.custom_help(cmd_help, cmd_desc, cmd_subcommands, cmd_flags, cmd_gflags)
 		} else {
-			c.help(scmd, c.flags, gflags)
+			c.help(cmd_help, cmd_desc, cmd_subcommands, cmd_flags, cmd_gflags)
 		}
 	}
 

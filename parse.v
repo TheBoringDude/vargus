@@ -278,3 +278,18 @@ fn (c &Commander) parse_config(p_config CommandConfig) CommandConfig {
 	// return new config
 	return cfg
 }
+
+// parse_subcommands parses the subcommands into a new list
+fn parse_subcommands(commands []&Commander) []HelpSubcommands {
+	mut h_commands := []HelpSubcommands{}
+
+	for i in commands {
+		h_commands << HelpSubcommands {
+			command: i.command
+			long_desc: i.long_desc
+			short_desc: i.short_desc
+		}
+	}
+
+	return h_commands
+} 
