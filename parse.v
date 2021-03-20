@@ -39,7 +39,7 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 					}
 				} else {
 					val := args[args.index(i) + 1] or {
-						panic('this was an error; a fix will be implemented soon') // TODO: FIX
+						''
 					}
 
 					if i == long || i == short {
@@ -54,7 +54,7 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 								}
 								exit(1)
 							}
-							panic('this was an error; a fix will be implemented soon') // TODO: FIX
+							''
 						}
 
 						// set found
@@ -62,13 +62,12 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 
 						// remove from osargs
 						if val != '' {
-							// remove boolean flag value if true / false is set
-							if x.data_type == .boolean && (val == 'true' || val == 'false') {
-								args.delete(args.index(val))
-							}
-
-							// only delete from args if flag data_type is not boolean
-							if x.data_type != .boolean {
+							if x.data_type == .boolean{
+								// remove value if valid bool
+								if bool_validator(val) {
+									args.delete(args.index(val))
+								}
+							} else {
 								args.delete(args.index(val))
 							}
 						}
