@@ -30,7 +30,7 @@ fn (mut c Commander) create_flag(fc FlagsTypeConfig, fl_type FlagType) {
 	mut flag := FlagArgs{}
 
 	flag.name = fc.name
-	flag.short_arg = fc.short_arg
+	flag.short_arg = fc.short_arg.str() // convert rune to str
 	flag.required = fc.required
 	flag.help = fc.help
 

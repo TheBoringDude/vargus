@@ -3,7 +3,7 @@ module vargus
 // IntFlagConfig struct config for integer flags.
 pub struct IntFlagConfig {
 	name          string
-	short_arg     string // TODO: use `rune`
+	short_arg     rune
 	required      bool
 	default_value int
 	help          string
@@ -12,7 +12,7 @@ pub struct IntFlagConfig {
 // StringFlagConfig struct config for integer flags.
 pub struct StringFlagConfig {
 	name          string
-	short_arg     string // TODO: use `rune`
+	short_arg     rune
 	required      bool
 	default_value string
 	help          string
@@ -21,7 +21,7 @@ pub struct StringFlagConfig {
 // FloatFlagConfig struct config for integer flags.
 pub struct FloatFlagConfig {
 	name          string
-	short_arg     string // TODO: use `rune`
+	short_arg     rune
 	required      bool
 	default_value f64
 	help          string
@@ -30,7 +30,7 @@ pub struct FloatFlagConfig {
 // BoolFlagConfig struct config for integer flags.
 pub struct BoolFlagConfig {
 	name          string
-	short_arg     string // TODO: use `rune`
+	short_arg     rune
 	required      bool
 	default_value bool
 	help          string
