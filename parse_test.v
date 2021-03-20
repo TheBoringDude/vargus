@@ -9,7 +9,7 @@ fn test_parse_flags() {
 
 	c.add_local_flag_bool(
 		name: 'verbose'
-		short_arg: 'v'
+		short_arg: `v`
 		required: false
 		default_value: false
 		help: 'set to verbose'
