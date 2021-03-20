@@ -1,5 +1,13 @@
 module vargus
 
+// function type
+type CmdFunction = fn (args []string, flags []FlagArgs)
+
+// THIS IS NOT WORKING: ==> type HelpFunc = fn (a string, b string, x []HelpSubcommands, y []FlagArgs, z []FlagArgs)
+type ValidatorFunc = fn (string) bool
+type ErrorFuncImp = fn (string, string)
+type ErrorFuncDef = fn (string)
+
 struct Commander {
 	command         string
 	short_desc      string
@@ -7,7 +15,7 @@ struct Commander {
 	allow_next_args bool
 mut:
 	is_root             bool
-	function            fn (x []string, y []FlagArgs)
+	function            CmdFunction
 	exec_func           bool
 	config              CommandConfig
 	flags               []FlagArgs
@@ -22,10 +30,20 @@ mut:
 // STRUCTS FOR APP CLI CONFIGURATIONS
 //   NOTE: THIS MIGHT BE REMOVED OR CHANGED IN THE FUTURE
 pub struct CmdHooksConfig {
-	pre_run             fn (x []string, y []FlagArgs)
-	post_run            fn (x []string, y []FlagArgs)
-	persistent_pre_run  fn (x []string, y []FlagArgs)
-	persistent_post_run fn (x []string, y []FlagArgs)
+	pre_run             CmdFunction
+	post_run            CmdFunction
+	persistent_pre_run  CmdFunction
+	persistent_post_run CmdFunction
+}
+
+pub struct CmdConfig {
+	command         string
+	short_desc      string
+	long_desc       string
+	allow_next_args bool = true // defaults to true
+	function        CmdFunction
+	hooks           CmdHooksConfig
+	config          CommandCmdConfig
 }
 
 pub struct CommandCmdConfig {
@@ -35,28 +53,18 @@ pub struct CommandCmdConfig {
 }
 
 pub struct CmdErrorsConfig {
-	required fn (string, string)
-	value    fn (string, string)
-	blank    fn (string)
-	unknown  fn (string)
-	command  fn (string)
+	required ErrorFuncImp
+	value    ErrorFuncImp
+	blank    ErrorFuncDef
+	unknown  ErrorFuncDef
+	command  ErrorFuncDef
 }
 
 pub struct CmdValidatorsConfig {
-	integer    fn (string) bool
-	string_var fn (string) bool
-	float      fn (string) bool
-	boolean    fn (string) bool
-}
-
-pub struct CmdConfig {
-	command         string
-	short_desc      string
-	long_desc       string
-	allow_next_args bool = true // defaults to true
-	function        fn (x []string, y []FlagArgs)
-	hooks           CmdHooksConfig
-	config          CommandCmdConfig
+	integer    ValidatorFunc
+	string_var ValidatorFunc
+	float      ValidatorFunc
+	boolean    ValidatorFunc
 }
 
 // END STRUCTS FOR APP CLI CONFIGURATIONS

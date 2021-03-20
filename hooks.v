@@ -13,14 +13,14 @@ struct CmdHooks {
 mut:
 	use_pre_run  bool
 	use_post_run bool
-	pre_run      fn (x []string, y []FlagArgs)
-	post_run     fn (x []string, y []FlagArgs)
+	pre_run      CmdFunction
+	post_run     CmdFunction
 }
 
 // Config required to be passed for adding hooks
 pub struct HooksConfig {
 	hooks_type CmdHooksType
-	function   fn (x []string, y []FlagArgs)
+	function   CmdFunction
 }
 
 // PersistentCmdHooks are command hooks that will run
@@ -29,8 +29,8 @@ struct PersistentCmdHooks {
 mut:
 	use_persistent_pre_run  bool
 	use_persistent_post_run bool
-	persistent_pre_run      fn (x []string, y []FlagArgs)
-	persistent_post_run     fn (x []string, y []FlagArgs)
+	persistent_pre_run      CmdFunction
+	persistent_post_run     CmdFunction
 }
 
 // add_hooks adds the capability to add hooks to a command

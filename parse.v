@@ -38,8 +38,8 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 						args.delete(args.index(i))
 					}
 				} else {
-					val := args[args.index(i)+1] or {
-						''
+					val := args[args.index(i) + 1] or {
+						panic('this was an error; a fix will be implemented soon') // TODO: FIX
 					}
 
 					if i == long || i == short {
@@ -54,7 +54,7 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 								}
 								exit(1)
 							}
-							'' // it is needed, not sure xD
+							panic('this was an error; a fix will be implemented soon') // TODO: FIX
 						}
 
 						// set found
@@ -72,15 +72,15 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 								args.delete(args.index(val))
 							}
 						}
-						
+
 						if i in args {
 							args.delete(args.index(i))
 						} else {
 							// show blank error
 							if cfg.errors.use_custom_blank {
-								cfg.errors.blank(osargs[osargs.index(i)-1])
+								cfg.errors.blank(osargs[osargs.index(i) - 1])
 							} else {
-								c.blank_err(osargs[osargs.index(i)-1])
+								c.blank_err(osargs[osargs.index(i) - 1])
 							}
 							exit(1)
 						}
@@ -102,7 +102,6 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 		}
 	}
 
-	
 	prsd_helper_flags := c.parse_helper(all_flags, cfg)
 
 	// append parsed flags from helper
@@ -114,7 +113,6 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 	// return the final args and flags parsed
 	return args, flags
 }
-
 
 // parse_value is a value parser and validator
 //   it checks if set value's data_type is similar to flag's
@@ -130,7 +128,7 @@ fn (c &Commander) parse_value(val string, dtype FlagDataType, flag string, flag_
 			} else {
 				valid = true
 			}
-			
+
 			if valid {
 				value = val
 			} else {
@@ -274,7 +272,7 @@ fn (c &Commander) parse_config(p_config CommandConfig) CommandConfig {
 	if c.config.validators.use_custom_boolean {
 		cfg.validators.boolean = c.config.validators.boolean
 	}
-	
+
 	// return new config
 	return cfg
 }
@@ -284,7 +282,7 @@ fn parse_subcommands(commands []&Commander) []HelpSubcommands {
 	mut h_commands := []HelpSubcommands{}
 
 	for i in commands {
-		h_commands << HelpSubcommands {
+		h_commands << HelpSubcommands{
 			command: i.command
 			long_desc: i.long_desc
 			short_desc: i.short_desc
@@ -292,4 +290,4 @@ fn parse_subcommands(commands []&Commander) []HelpSubcommands {
 	}
 
 	return h_commands
-} 
+}

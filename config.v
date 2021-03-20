@@ -17,11 +17,11 @@ mut:
 	use_custom_blank    bool
 	use_custom_unknown  bool
 	use_custom_command  bool
-	required            fn (string, string)
-	value               fn (string, string)
-	blank               fn (string)
-	unknown             fn (string)
-	command             fn (string)
+	required            ErrorFuncImp
+	value               ErrorFuncImp
+	blank               ErrorFuncDef
+	unknown             ErrorFuncDef
+	command             ErrorFuncDef
 }
 
 // ValidatorsConfig is the custom configurations for flag validators
@@ -31,10 +31,10 @@ mut:
 	use_custom_string_var bool
 	use_custom_float      bool
 	use_custom_boolean    bool
-	integer               fn (string) bool
-	string_var            fn (string) bool
-	float                 fn (string) bool
-	boolean               fn (string) bool
+	integer               ValidatorFunc
+	string_var            ValidatorFunc
+	float                 ValidatorFunc
+	boolean               ValidatorFunc
 }
 
 // set_help sets a custom help function for the app
@@ -44,8 +44,8 @@ pub fn (mut c Commander) set_help(f fn (string, string, []HelpSubcommands, []Fla
 }
 
 pub struct CFlagValidatorConfig {
-	flag_type FlagDataType     [required]
-	function  fn (string) bool [required]
+	flag_type FlagDataType  [required]
+	function  ValidatorFunc [required]
 }
 
 // set_validator sets a custom validators for a specific flag type
