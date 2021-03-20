@@ -85,28 +85,28 @@ fn main() {
 
 	cmder.add_global_flag_int(
 		name: 'one'
-		short_arg: 'o'
+		short_arg: `o`
 		required: false
 		default_value: 1
 		help: 'oooo'
 	)
 	generate.add_global_flag_string(
 		name: 'type'
-		short_arg: 't'
+		short_arg: `t`
 		required: false
 		default_value: 'll'
 		help: 'project dir'
 	)
 	generate.add_global_flag_bool(
 		name: 'verbose'
-		short_arg: 'v'
+		short_arg: `v`
 		required: false
 		default_value: false
 		help: 'set to verbose'
 	)
 	project.add_local_flag_string(
 		name: 'dir'
-		short_arg: 'd'
+		short_arg: `d`
 		required: true
 		default_value: ''
 		help: 'project dir'
