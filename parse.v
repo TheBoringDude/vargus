@@ -23,7 +23,7 @@ fn (c &Commander) parse_flags(osargs []string, gflags []FlagArgs, cfg CommandCon
 
 			if i.starts_with(long) || i.starts_with(short) {
 				// check if equals sign is used
-				if '=' in i {
+				if i.contains("=") {
 					y := args[args.index(i)].split('=')
 					flag := y[0]
 					flag_value = y[1]

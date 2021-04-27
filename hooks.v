@@ -1,6 +1,6 @@
 module vargus
 
-enum CmdHooksType {
+pub enum CmdHooksType {
 	pre_run
 	post_run
 	persistent_pre_run

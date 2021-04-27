@@ -26,7 +26,7 @@ fn valid_number(y string) bool {
 // int_validator is a simple validator for integer strings
 fn int_validator(x string) bool {
 	// integers do not contain '.'
-	if '.' in x {
+	if x.contains('.') {
 		return false
 	}
 
